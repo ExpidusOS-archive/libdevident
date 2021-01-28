@@ -1,0 +1,2 @@
+# libdevident
+Device identification library
