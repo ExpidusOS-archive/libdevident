@@ -1,0 +1,18 @@
+#pragma once
+
+#include <devident/enums.h>
+
+#cmakedefine HARD_IDENT
+#cmakedefine FUNC_IDENT
+#cmakedefine FS_IDENT
+
+#ifdef HARD_IDENT
+#define DEVICE_NAME "@IDENT_DEVICE_NAME@"
+#define DEVICE_REV @IDENT_DEVICE_REVISION@
+#define DEVICE_MANUFACTURER "@IDENT_DEVICE_MANUFACTURER@"
+#define IDENT_DEVICE_TYPE DEVIDENT_TYPE_@IDENT_DEVICE_TYPE@
+#endif
+
+#ifdef FS_IDENT
+#define SYSCONFDIR "@CMAKE_INSTALL_FULL_SYSCONFDIR@"
+#endif

@@ -1,0 +1,14 @@
+#pragma once
+
+/**
+ * Device type
+ */
+typedef enum {
+	DEVIDENT_TYPE_UNKNOWN = 0,
+	DEVIDENT_TYPE_PHONE = 1,
+	DEVIDENT_TYPE_DESKTOP = 2,
+	DEVIDENT_TYPE_TABLET = 3,
+	DEVIDENT_TYPE_WATCH = 4,
+	DEVIDENT_TYPE_TV = 5,
+	DEVIDENT_TYPE_IOT = 6
+} devident_type_t;
