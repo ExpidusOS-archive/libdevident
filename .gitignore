@@ -3,6 +3,7 @@ compile_commands.json
 meson-info
 meson-logs
 meson-private
+meson-uninstalled
 .ninja_deps
 .ninja_log
 *.so*
