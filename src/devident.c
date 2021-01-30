@@ -28,7 +28,7 @@ devident_t* devident_new(GError** error) {
 		self->screen_name = "DSI-1";
 		self->screen_scale[0] = 0.8;
 		self->screen_scale[1] = 0.8;
-	} else g_free(model);
+	} else g_clear_pointer(&model, g_free);
 
 	if (model == NULL) {
 		// TODO: maybe default to using the sysfs when the "database" has no entry
@@ -38,13 +38,13 @@ devident_t* devident_new(GError** error) {
 		self->maker = g_strdup("Unknown");
 		self->screen_scale[0] = 1.0;
 		self->screen_scale[1] = 1.0;
-	} else g_free(model);
+	} else g_clear_pointer(&model, g_free);
 	return self;
 }
 
 void devident_destroy(devident_t* self) {
-	g_free(self->model);
-	g_free(self->rev);
-	g_free(self->maker);
+	g_clear_pointer(&self->model, g_free);
+	g_clear_pointer(&self->rev, g_free);
+	g_clear_pointer(&self->maker, g_free);
 	g_free(self);
 }
