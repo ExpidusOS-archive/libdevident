@@ -25,6 +25,7 @@ devident_t* devident_new(GError** error) {
 		self->model = g_strdup("PinePhone Braveheart");
 		self->rev = g_strdup("1.1");
 		self->maker = g_strdup("PINE64");
+		self->touchinput_path = "/dev/input/event1";
 		self->screen_name = "DSI-1";
 		self->screen_scale[0] = 0.8;
 		self->screen_scale[1] = 0.8;

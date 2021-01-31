@@ -20,6 +20,7 @@ typedef struct {
 	gchar* model;
 	gchar* rev;
 	gchar* maker;
+	gchar* touchinput_path;
 	gchar* screen_name;
 	float screen_scale[2];
 } devident_t;
