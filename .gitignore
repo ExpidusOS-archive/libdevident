@@ -4,7 +4,17 @@ meson-info
 meson-logs
 meson-private
 meson-uninstalled
+*.p
 .ninja_deps
 .ninja_log
 *.so*
 *.a*
+*.pc
+*.conf
+!data/*.conf
+devident-*.vapi
+devident.vapi
+devident-*.h
+devident.h
+devidentd
+com.devident.service
