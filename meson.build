@@ -7,7 +7,7 @@ conf_data = configuration_data()
 conf_data.set('BINDIR', join_paths(get_option('prefix'), get_option('bindir')))
 
 # Common/client library
-libdevident = shared_library('devident', 'src/lib/component.vala', 'src/lib/device.vala',
+libdevident = shared_library('devident', 'src/lib/component.vala', 'src/lib/device.vala', 'src/lib/daemon.vala',
 	vala_header: 'devident.h',
 	vala_vapi: 'devident-1.0.vapi',
 	install_dir: [true, true, true],

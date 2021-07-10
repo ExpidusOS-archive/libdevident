@@ -7,7 +7,7 @@ namespace devident {
   };
 
   [DBus(name = "com.devident.Daemon")]
-  public class DBusDaemon : GLib.Object {
+  public class DBusDaemon : GLib.Object, BaseDaemon {
     private GLib.MainLoop _loop;
 
     [DBus(visible = false)]
@@ -53,9 +53,17 @@ namespace devident {
     Daemon.log_ident = Daemon.pid_file_ident = Daemon.ident_from_argv0(args[0]);
 
     if (arg_kill) {
+      try {
+        var conn = GLib.Bus.get_sync(GLib.BusType.SYSTEM);
+        var daemon = conn.get_proxy_sync<BaseDaemon>("com.devident", "/com/devident");
+        daemon.quit();
+        return 0;
+      } catch (GLib.Error e) {
+        Daemon.log(Daemon.LogPriority.WARNING, "Failed to kill daemon using DBus, falling back to PID file: (%s) %s", e.domain.to_string(), e.message);
+      }
       int ret = Daemon.pid_file_kill_wait(Daemon.Sig.TERM, 5);
       if (ret < 0) {
-        Daemon.log(Daemon.LogPriority.WARNING, "Failed to kill daemon");
+        Daemon.log(Daemon.LogPriority.WARNING, "Failed to kill daemon using PID file.");
       }
       return ret < 0 ? 1 : 0;
     }
@@ -122,7 +130,7 @@ namespace devident {
 
       GLib.Bus.own_name(GLib.BusType.SYSTEM, "com.devident", GLib.BusNameOwnerFlags.NONE, (conn, name) => {
         try {
-          conn.register_object("/com/devident/Daemon", new DBusDaemon(loop));
+          conn.register_object("/com/devident", new DBusDaemon(loop));
         } catch (GLib.IOError e) {
           Daemon.log(Daemon.LogPriority.ERR, "Failed to register object");
           loop.quit();
@@ -134,10 +142,4 @@ namespace devident {
     }
     return 0;
   }
-}
-
-namespace GLib.Unix {
-  delegate bool FDSourceFunc(int fd, IOCondition condition);
-  extern Source fd_source_new(int fd, IOCondition condition);
-  extern uint fd_add_full(int pri, int fd, IOCondition condition, FDSourceFunc func);
 }
