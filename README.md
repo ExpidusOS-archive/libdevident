@@ -12,5 +12,5 @@ A versatile device identification library. `libdevident` is designed in mind for
 ## Features
 * DBus activatable service
 * Per-device configuration files using regex
-* Overridable applications **(WIP)**
+* Overridable applications
 * Fallback virtual device

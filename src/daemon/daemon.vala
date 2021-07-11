@@ -13,6 +13,7 @@ namespace devident {
     private GLib.MainLoop _loop;
     private GLib.DBusConnection _conn;
     private GLib.List<Device> _devices;
+    private GLib.KeyFile _kf;
 
     [DBus(visible = false)]
     public GLib.MainLoop loop {
@@ -34,25 +35,28 @@ namespace devident {
       }
     }
 
+    [DBus(visible = false)]
+    public GLib.KeyFile kf {
+      get {
+        return this._kf;
+      }
+    }
+
     public DBusDaemon(GLib.MainLoop loop, GLib.DBusConnection conn) throws GLib.Error {
       Object(loop: loop, conn: conn);
+      this._kf = new GLib.KeyFile();
+      this._kf.load_from_file(SYSCONFDIR + "/expidus/devident.cfg", GLib.KeyFileFlags.NONE);
       this._devices = new GLib.List<Device>();
       this._devices.append(new AutoDevice(this));
     }
 
-    public GLib.ObjectPath get_device() throws GLib.Error {
-      var dev_string = "";
-      if (!GLib.FileUtils.test("/sys/firmware/devicetree/base/model", GLib.FileTest.IS_REGULAR)) {
-        if (!GLib.FileUtils.test("/sys/devices/virtual/dmi/id/product_name", GLib.FileTest.IS_REGULAR)) {
-          return new GLib.ObjectPath("/com/devident/device/auto");
-        } else {
-          GLib.FileUtils.get_contents("/sys/devices/virtual/dmi/id/product_name", out dev_string);
-          dev_string = dev_string.replace("\n", "");
-        }
-      } else {
-        GLib.FileUtils.get_contents("/sys/firmware/devicetree/base/model", out dev_string);
-        dev_string = dev_string.replace("\n", "");
-      }
+    public void reload() throws GLib.Error {
+      this._kf.load_from_file(SYSCONFDIR + "/expidus/devident.cfg", GLib.KeyFileFlags.NONE);
+    }
+
+    public GLib.ObjectPath get_device(GLib.BusName sender) throws GLib.Error {
+      string? dev_string = get_device_string(this, sender);
+      if (dev_string == null) return new GLib.ObjectPath("/com/devident/device/auto");
 
       for (unowned var item = this._devices.first(); item != null; item = item.next) {
         var dev = item.data as FileDevice;
@@ -64,7 +68,6 @@ namespace devident {
         }
       }
 
-      // TODO: check process overrides
       var d = GLib.Dir.open(SYSCONFDIR + "/expidus/devices.d", 0);
       string? name = null;
 

@@ -103,19 +103,8 @@ namespace devident {
     }
 
     public override string get_name() throws GLib.Error {
-      var dev_string = "";
-      if (!GLib.FileUtils.test("/sys/firmware/devicetree/base/model", GLib.FileTest.IS_REGULAR)) {
-        if (!GLib.FileUtils.test("/sys/devices/virtual/dmi/id/product_name", GLib.FileTest.IS_REGULAR)) {
-          return "";
-        } else {
-          GLib.FileUtils.get_contents("/sys/devices/virtual/dmi/id/product_name", out dev_string);
-          dev_string = dev_string.replace("\n", "");
-        }
-      } else {
-        GLib.FileUtils.get_contents("/sys/firmware/devicetree/base/model", out dev_string);
-        dev_string = dev_string.replace("\n", "");
-      }
-      return dev_string;
+      string? dev_string = get_device_string(this.daemon, null);
+      return dev_string == null ? "" : dev_string;
     }
 
     public override GLib.ObjectPath[] get_components_dbus() throws GLib.Error {

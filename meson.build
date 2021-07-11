@@ -6,6 +6,8 @@ dbus = dependency('dbus-1')
 install_subdir('data/devices',
 	install_dir: join_paths(get_option('sysconfdir'), 'expidus', 'devices.d'),
 	strip_directory: true)
+install_data('data/devident.cfg',
+	install_dir: join_paths(get_option('sysconfdir'), 'expidus'))
 
 conf_data = configuration_data()
 conf_data.set('BINDIR', join_paths(get_option('prefix'), get_option('bindir')))
@@ -27,7 +29,7 @@ pkg.generate(libdevident, description: 'A device identification library.',
 libdevident_dep = declare_dependency(link_with: libdevident)
 
 # Daemon
-executable('devidentd', 'src/daemon/component.vala', 'src/daemon/daemon.vala', 'src/daemon/device.vala', build_conf,
+executable('devidentd', 'src/daemon/component.vala', 'src/daemon/daemon.vala', 'src/daemon/device.vala', 'src/daemon/utils.vala', build_conf,
 	install: true,
 	dependencies: [dependency('gobject-2.0'), dependency('gio-2.0'), dependency('libdaemon'), libdevident_dep])
 
