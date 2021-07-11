@@ -103,6 +103,13 @@ namespace devident {
         y = r[1];
       } else x = y = 0;
     }
+
+    public string get_backlight() throws GLib.Error {
+      if (this._comp.dev.kf.has_key(this._comp.get_id(), "backlight")) {
+        return this._comp.dev.kf.get_string(this._comp.get_id(), "backlight");
+      }
+      return "";
+    }
   }
 
   [DBus(name = "com.devident.TouchDisplay")]

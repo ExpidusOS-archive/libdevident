@@ -40,7 +40,7 @@ namespace devident {
     for (var i = 0; i < overrides.length; i++) {
       var a = overrides[i].split(":");
       if (a.length != 2) continue;
-      if (a[0] == argv0) {
+      if (GLib.Regex.match_simple(a[0], argv0)) {
         return a[1];
       }
     }

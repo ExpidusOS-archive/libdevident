@@ -14,6 +14,7 @@ namespace devident {
   public interface Display : GLib.Object {
     public abstract string get_name() throws GLib.Error;
     public abstract void get_resolution(out int x, out int y) throws GLib.Error;
+    public abstract string get_backlight() throws GLib.Error;
   }
 
   [DBus(name = "com.devident.TouchDisplay")]
