@@ -18,3 +18,4 @@ devident-*.h
 devident.h
 devidentd
 com.devident.service
+build.vala
