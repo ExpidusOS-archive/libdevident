@@ -1,6 +1,6 @@
 namespace devident {
   [DBus(name = "com.devident.Device")]
-  public class FileDevice : Device {
+  public class FileDevice : GLib.Object, Device {
     private DBusDaemon _daemon;
     private string _path;
     private GLib.KeyFile _kf = new GLib.KeyFile();
@@ -47,19 +47,29 @@ namespace devident {
       this.daemon.conn.unregister_object(this._obj_id);
     }
 
-    public override string get_id() {
+    public string get_id() throws GLib.Error {
       return GLib.Path.get_basename(this._path).replace(".cfg", "");
     }
 
-    public override string get_name() throws GLib.Error {
+    public string get_name() throws GLib.Error {
       return this._kf.get_string("device", "name");
     }
 
-    public override string get_manufacturer() throws GLib.Error {
+    public string get_manufacturer() throws GLib.Error {
       return this._kf.get_string("device", "manufacturer");
     }
 
-    public override GLib.ObjectPath[] get_components_dbus() throws GLib.Error {
+    public DeviceType get_device_type() throws GLib.Error {
+      switch (this._kf.get_string("device", "type")) {
+        case "phone": return DeviceType.PHONE;
+        case "laptop": return DeviceType.LAPTOP;
+        case "desktop": return DeviceType.DESKTOP;
+        case "server": return DeviceType.SERVER;
+      }
+      return DeviceType.UNKNOWN;
+    }
+
+    public GLib.ObjectPath[] get_components_dbus() throws GLib.Error {
       var objs = new GLib.ObjectPath[this._components.length()];
       for (var i = 0; i < this._components.length(); i++) {
         objs[i] = this._components.nth_data(i).get_object_path();
@@ -69,7 +79,7 @@ namespace devident {
   }
 
   [DBus(name = "com.devident.Device")]
-  public class AutoDevice : Device {
+  public class AutoDevice : GLib.Object, Device {
     private DBusDaemon _daemon;
     private uint _obj_id;
     
@@ -89,11 +99,11 @@ namespace devident {
       this.daemon.conn.unregister_object(this._obj_id);
     }
 
-    public override string get_id() throws GLib.Error {
+    public string get_id() throws GLib.Error {
       return "auto";
     }
 
-    public override string get_manufacturer() throws GLib.Error {
+    public string get_manufacturer() throws GLib.Error {
       var str = "";
       if (GLib.FileUtils.test("/sys/devices/virtual/dmi/id/board_vendor", GLib.FileTest.IS_REGULAR)) {
         GLib.FileUtils.get_contents("/sys/devices/virtual/dmi/id/board_vendor", out str);
@@ -102,12 +112,16 @@ namespace devident {
       return str;
     }
 
-    public override string get_name() throws GLib.Error {
+    public DeviceType get_device_type() throws GLib.Error {
+      return DeviceType.UNKNOWN;
+    }
+
+    public string get_name() throws GLib.Error {
       string? dev_string = get_device_string(this.daemon, null);
       return dev_string == null ? "" : dev_string;
     }
 
-    public override GLib.ObjectPath[] get_components_dbus() throws GLib.Error {
+    public GLib.ObjectPath[] get_components_dbus() throws GLib.Error {
       return new GLib.ObjectPath[0];
     }
   }

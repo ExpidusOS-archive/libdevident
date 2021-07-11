@@ -54,7 +54,8 @@ namespace devident {
       this._kf.load_from_file(SYSCONFDIR + "/expidus/devident.cfg", GLib.KeyFileFlags.NONE);
     }
 
-    public GLib.ObjectPath get_device(GLib.BusName sender) throws GLib.Error {
+    [DBus(name = "GetDevice")]
+    public GLib.ObjectPath get_device_dbus(GLib.BusName sender) throws GLib.Error {
       string? dev_string = get_device_string(this, sender);
       if (dev_string == null) return new GLib.ObjectPath("/com/devident/device/auto");
 

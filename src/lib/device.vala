@@ -3,10 +3,11 @@ namespace devident {
    * Base device class
    */
   [DBus(name = "com.devident.Device")]
-  public abstract class Device : GLib.Object {
+  public interface Device : GLib.Object {
     public abstract string get_id() throws GLib.Error;
     public abstract string get_name() throws GLib.Error;
     public abstract string get_manufacturer() throws GLib.Error;
+    public abstract DeviceType get_device_type() throws GLib.Error;
 
     [DBus(visible = true, name = "GetComponents")]
     public abstract GLib.ObjectPath[] get_components_dbus() throws GLib.Error;
@@ -67,5 +68,13 @@ namespace devident {
       }
       return present;
     }
+  }
+
+  public enum DeviceType {
+    UNKNOWN = 0,
+    PHONE,
+    LAPTOP,
+    DESKTOP,
+    SERVER
   }
 }
