@@ -3,6 +3,10 @@ project('devident', 'vala', 'c', license: 'GPL-3.0-only', version: '0.1.0-prealp
 pkg = import('pkgconfig')
 dbus = dependency('dbus-1')
 
+install_subdir('data/devices',
+	install_dir: join_paths(get_option('sysconfdir'), 'expidus', 'devices.d'),
+	strip_directory: true)
+
 conf_data = configuration_data()
 conf_data.set('BINDIR', join_paths(get_option('prefix'), get_option('bindir')))
 conf_data.set('SYSCONFDIR', get_option('sysconfdir'))

@@ -19,3 +19,5 @@ devident.h
 devidentd
 com.devident.service
 build.vala
+*.cfg
+!data/devices/*.cfg
