@@ -59,8 +59,6 @@ namespace devident {
       string? dev_string = get_device_string(this, sender);
       if (dev_string == null) return new GLib.ObjectPath("/com/devident/device/auto");
 
-      stdout.printf("%s\n", dev_string);
-
       for (unowned var item = this._devices.first(); item != null; item = item.next) {
         var dev = item.data as FileDevice;
         if (dev == null) continue;
