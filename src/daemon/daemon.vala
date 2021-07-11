@@ -84,7 +84,7 @@ namespace devident {
     }
 
     public string get_version() throws GLib.Error {
-      return "0.1.0";
+      return VERSION;
     }
 
     public void quit() throws GLib.Error {
@@ -96,6 +96,21 @@ namespace devident {
     Daemon.retval_send(255);
     Daemon.signal_done();
     Daemon.pid_file_remove();
+  }
+
+  private void run() {
+    GLib.MainLoop loop = new GLib.MainLoop();
+
+    GLib.Bus.own_name(GLib.BusType.SYSTEM, "com.devident", GLib.BusNameOwnerFlags.NONE, (conn, name) => {
+      try {
+        conn.register_object("/com/devident", new DBusDaemon(loop, conn));
+      } catch (GLib.Error e) {
+        Daemon.log(Daemon.LogPriority.ERR, "Failed to register object");
+        loop.quit();
+      }
+    });
+
+    loop.run();
   }
 
   public int main(string[] args) {
@@ -128,18 +143,7 @@ namespace devident {
     }
 
     if (arg_no_daemon) {
-      GLib.MainLoop loop = new GLib.MainLoop();
-
-      GLib.Bus.own_name(GLib.BusType.SYSTEM, "com.devident", GLib.BusNameOwnerFlags.NONE, (conn, name) => {
-        try {
-          conn.register_object("/com/devident", new DBusDaemon(loop, conn));
-        } catch (GLib.Error e) {
-          Daemon.log(Daemon.LogPriority.ERR, "Failed to register object");
-          loop.quit();
-        }
-      });
-
-      loop.run();
+      run();
       return 0;
     }
 
@@ -199,20 +203,8 @@ namespace devident {
       }
 
       Daemon.retval_send(0);
-
-      GLib.MainLoop loop = new GLib.MainLoop();
       Daemon.log(Daemon.LogPriority.INFO, "Daemon is online");
-
-      GLib.Bus.own_name(GLib.BusType.SYSTEM, "com.devident", GLib.BusNameOwnerFlags.NONE, (conn, name) => {
-        try {
-          conn.register_object("/com/devident", new DBusDaemon(loop, conn));
-        } catch (GLib.Error e) {
-          Daemon.log(Daemon.LogPriority.ERR, "Failed to register object");
-          loop.quit();
-        }
-      });
-
-      loop.run();
+      run();
       finish();
     }
     return 0;

@@ -10,6 +10,7 @@ install_subdir('data/devices',
 conf_data = configuration_data()
 conf_data.set('BINDIR', join_paths(get_option('prefix'), get_option('bindir')))
 conf_data.set('SYSCONFDIR', get_option('sysconfdir'))
+conf_data.set('VERSION', meson.project_version())
 
 build_conf = configure_file(input: 'src/build.vala.in', output: 'build.vala',
 	configuration: conf_data)
