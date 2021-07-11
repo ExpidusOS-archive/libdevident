@@ -56,11 +56,36 @@ namespace devident {
     public abstract bool has_power() throws GLib.Error;
   }
 
+  [DBus(name = "com.devident.Camera")]
+  public interface Camera : GLib.Object {
+    public abstract string get_path() throws GLib.Error;
+    public abstract string[] get_names() throws GLib.Error;
+    public abstract string get_driver() throws GLib.Error;
+  }
+
+  [DBus(name = "com.devident.RGB")]
+  public interface RGB : GLib.Object {
+    [DBus(name = "GetType")]
+    public abstract RGBType get_rgb_type() throws GLib.Error;
+    public abstract string get_path() throws GLib.Error;
+    public abstract string get_red() throws GLib.Error;
+    public abstract string get_green() throws GLib.Error;
+    public abstract string get_blue() throws GLib.Error;
+  }
+
+  public enum RGBType {
+    SYSFS_SEPERATE_RGB,
+    SYSFS,
+    IO_MSI
+  }
+
   public enum ComponentCategory {
     NONE = 0,
     DISPLAY,
     TOUCH_DISPLAY,
     HW_INPUT,
-    GFX
+    GFX,
+    CAMERA,
+    RGB
   }
 }

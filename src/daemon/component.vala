@@ -35,6 +35,12 @@ namespace devident {
         case ComponentCategory.HW_INPUT:
           this._obj = new FileHWInput(this);
           break;
+        case ComponentCategory.CAMERA:
+          this._obj = new FileCamera(this);
+          break;
+        case ComponentCategory.RGB:
+          this._obj = new FileRGB(this);
+          break;
       }
     }
 
@@ -56,6 +62,8 @@ namespace devident {
           case "touch-display": return ComponentCategory.TOUCH_DISPLAY;
           case "hw-input": return ComponentCategory.HW_INPUT;
           case "gfx": return ComponentCategory.GFX;
+          case "camera": return ComponentCategory.CAMERA;
+          case "rgb": return ComponentCategory.RGB;
         }
       }
       return ComponentCategory.NONE;
@@ -207,44 +215,112 @@ namespace devident {
       this._comp.dev.daemon.conn.unregister_object(this._obj_id);
     }
 
-    public bool has_home() throws GLib.Error {
+    private bool has(string name) throws GLib.Error {
       var buttons = this._comp.dev.kf.get_string_list(this._comp.get_id(), "buttons");
       for (var i = 0; i < buttons.length; i++) {
-        if (buttons[i] == "home") return true;
+        if (buttons[i] == name) return true;
       }
       return false;
+    }
+
+    public bool has_home() throws GLib.Error {
+      return this.has("home");
     }
 
     public bool has_back() throws GLib.Error {
-      var buttons = this._comp.dev.kf.get_string_list(this._comp.get_id(), "buttons");
-      for (var i = 0; i < buttons.length; i++) {
-        if (buttons[i] == "back") return true;
-      }
-      return false;
+      return this.has("home");
     }
 
     public bool has_context() throws GLib.Error {
-      var buttons = this._comp.dev.kf.get_string_list(this._comp.get_id(), "buttons");
-      for (var i = 0; i < buttons.length; i++) {
-        if (buttons[i] == "context") return true;
-      }
-      return false;
+      return this.has("home");
     }
 
     public bool has_volume() throws GLib.Error {
-      var buttons = this._comp.dev.kf.get_string_list(this._comp.get_id(), "buttons");
-      for (var i = 0; i < buttons.length; i++) {
-        if (buttons[i] == "volume") return true;
-      }
-      return false;
+      return this.has("home");
     }
 
     public bool has_power() throws GLib.Error {
-      var buttons = this._comp.dev.kf.get_string_list(this._comp.get_id(), "buttons");
-      for (var i = 0; i < buttons.length; i++) {
-        if (buttons[i] == "power") return true;
+      return this.has("home");
+    }
+  }
+
+  [DBus(name = "com.devident.Camera")]
+  public class FileCamera : GLib.Object, Camera {
+    private FileComponent _comp;
+    private uint _obj_id;
+
+    public FileCamera(FileComponent comp) throws GLib.Error {
+      this._comp = comp;
+      this._obj_id = this._comp.dev.daemon.conn.register_object(this._comp.get_object_path(), (this as Camera));
+    }
+
+    ~FileCamera() {
+      this._comp.dev.daemon.conn.unregister_object(this._obj_id);
+    }
+
+    public string get_path() throws GLib.Error {
+      return this._comp.dev.kf.get_string(this._comp.get_id(), "path");
+    }
+
+    public string[] get_names() throws GLib.Error {
+      return this._comp.dev.kf.get_string_list(this._comp.get_id(), "names");
+    }
+    
+    public string get_driver() throws GLib.Error {
+      return this._comp.dev.kf.get_string(this._comp.get_id(), "driver");
+    }
+  }
+
+  [DBus(name = "com.devident.RGB")]
+  public class FileRGB : GLib.Object, RGB {
+    private FileComponent _comp;
+    private uint _obj_id;
+
+    public FileRGB(FileComponent comp) throws GLib.Error {
+      this._comp = comp;
+      this._obj_id = this._comp.dev.daemon.conn.register_object(this._comp.get_object_path(), (this as RGB));
+    }
+
+    ~FileRGB() {
+      this._comp.dev.daemon.conn.unregister_object(this._obj_id);
+    }
+
+    public RGBType get_rgb_type() throws GLib.Error {
+      switch (this._comp.dev.kf.get_string(this._comp.get_id(), "type")) {
+        case "sysfs": return RGBType.SYSFS;
+        case "sysfs-seperate-rgb": return RGBType.SYSFS_SEPERATE_RGB;
+        case "io-msi": return RGBType.IO_MSI;
       }
-      return false;
+      return RGBType.SYSFS;
+    }
+
+    public string get_path() throws GLib.Error {
+      if (this.get_rgb_type() != RGBType.SYSFS_SEPERATE_RGB) return this._comp.dev.kf.get_string(this._comp.get_id(), "path");
+      return "";
+    }
+
+    public string get_red() throws GLib.Error {
+      if (this.get_rgb_type() == RGBType.SYSFS_SEPERATE_RGB) {
+        var s = this._comp.dev.kf.get_string_list(this._comp.get_id(), "path");
+        if (s.length > 1) return s[0];
+      }
+      return "";
+    }
+
+    public string get_green() throws GLib.Error {
+      if (this.get_rgb_type() == RGBType.SYSFS_SEPERATE_RGB) {
+        var s = this._comp.dev.kf.get_string_list(this._comp.get_id(), "path");
+        if (s.length > 2) return s[1];
+      }
+      return "";
+    }
+
+    public string get_blue() throws GLib.Error {
+      if (this.get_rgb_type() == RGBType.SYSFS_SEPERATE_RGB) {
+        var s = this._comp.dev.kf.get_string_list(this._comp.get_id(), "path");
+        if (s.length == 3) return s[2];
+      }
+      return "";
     }
   }
 }
