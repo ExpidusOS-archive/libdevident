@@ -18,7 +18,7 @@ build_conf = configure_file(input: 'src/build.vala.in', output: 'build.vala',
 	configuration: conf_data)
 
 # Common/client library
-libdevident = shared_library('devident', 'src/lib/component.vala', 'src/lib/daemon.vala', 'src/lib/device.vala',
+libdevident = shared_library('devident', 'src/lib/component.vala', 'src/lib/daemon.vala', 'src/lib/device.vala', 'src/lib/utils.vala', build_conf,
 	vala_header: 'devident.h',
 	vala_vapi: 'devident-1.0.vapi',
 	install_dir: [true, true, true],
@@ -29,7 +29,7 @@ pkg.generate(libdevident, description: 'A device identification library.',
 libdevident_dep = declare_dependency(link_with: libdevident)
 
 # Daemon
-executable('devidentd', 'src/daemon/component.vala', 'src/daemon/daemon.vala', 'src/daemon/device.vala', 'src/daemon/utils.vala', build_conf,
+executable('devidentd', 'src/daemon/component.vala', 'src/daemon/daemon.vala', 'src/daemon/device.vala', 'src/daemon/utils.vala',
 	install: true,
 	dependencies: [dependency('gobject-2.0'), dependency('gio-2.0'), dependency('libdaemon'), libdevident_dep])
 
