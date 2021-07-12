@@ -62,6 +62,7 @@ namespace devident {
     public abstract string get_path() throws GLib.Error;
     public abstract string[] get_names() throws GLib.Error;
     public abstract string get_driver() throws GLib.Error;
+    public abstract string get_selector_path() throws GLib.Error;
   }
 
   [DBus(name = "com.devident.RGB")]

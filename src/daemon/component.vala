@@ -276,6 +276,10 @@ namespace devident {
     public string get_driver() throws GLib.Error {
       return this._comp.dev.kf.get_string(this._comp.get_id(), "driver");
     }
+
+    public string get_selector_path() throws GLib.Error {
+      return this._comp.dev.kf.get_string(this._comp.get_id(), "selector-path");
+    }
   }
 
   [DBus(name = "com.devident.RGB")]
