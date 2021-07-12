@@ -68,6 +68,13 @@ namespace devident {
       }
       return ComponentCategory.NONE;
     }
+    
+    public string get_driver() throws GLib.Error {
+      if (this._dev.kf.has_key(this._id, "driver")) {
+        return this._dev.kf.get_string(this._id, "driver");
+      }
+      return "";
+    }
 
     public bool is_present() throws GLib.Error {
       return true; // TODO: how do I do this?
@@ -271,10 +278,6 @@ namespace devident {
 
     public string[] get_names() throws GLib.Error {
       return this._comp.dev.kf.get_string_list(this._comp.get_id(), "names");
-    }
-    
-    public string get_driver() throws GLib.Error {
-      return this._comp.dev.kf.get_string(this._comp.get_id(), "driver");
     }
 
     public string get_selector_path() throws GLib.Error {

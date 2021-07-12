@@ -6,6 +6,7 @@ namespace devident {
   public interface Component : GLib.Object {
     public abstract string get_id() throws GLib.Error;
     public abstract ComponentCategory get_category() throws GLib.Error;
+    public abstract string get_driver() throws GLib.Error;
 
     public abstract bool is_present() throws GLib.Error;
   }
@@ -61,7 +62,6 @@ namespace devident {
   public interface Camera : GLib.Object {
     public abstract string get_path() throws GLib.Error;
     public abstract string[] get_names() throws GLib.Error;
-    public abstract string get_driver() throws GLib.Error;
     public abstract string get_selector_path() throws GLib.Error;
   }
 
