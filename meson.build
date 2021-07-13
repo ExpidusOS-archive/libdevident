@@ -25,7 +25,7 @@ libdevident = shared_library('devident', 'src/lib/component.vala', 'src/lib/daem
 	install: true,
 	dependencies: [dependency('glib-2.0'), dependency('gobject-2.0'), dependency('gio-2.0')])
 pkg.generate(libdevident, description: 'A device identification library.',
-	name: 'devident')
+	name: 'devident-1.0')
 libdevident_dep = declare_dependency(link_with: libdevident)
 
 # Daemon
