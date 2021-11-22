@@ -12,8 +12,8 @@ meson-uninstalled
 *.pc
 *.conf
 !data/*.conf
-devident-*.vapi
-devident.vapi
+*.vapi
+*.gir
 devident-*.h
 devident.h
 devidentd

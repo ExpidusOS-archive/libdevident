@@ -1,216 +1,147 @@
 namespace devident {
-  private bool arg_kill = false;
-  private bool arg_no_daemon = false;
+	private static bool arg_version = false;
 
-  private const GLib.OptionEntry[] options = {
-    { "kill", 'k', GLib.OptionFlags.NONE, GLib.OptionArg.NONE, ref arg_kill, "Kills the current instance of the daemon", null },
-    { "no-daemon", 'n', GLib.OptionFlags.NONE, GLib.OptionArg.NONE, ref arg_no_daemon, "Doesn't fork like a daemon", null },
-    { null }
-  };
+	private const GLib.OptionEntry[] options = {
+		{ "version", 'v', GLib.OptionFlags.NONE, GLib.OptionArg.NONE, ref arg_version, "Prints the version string", null },
+		{ null }
+	};
 
-  [DBus(name = "com.devident.Daemon")]
-  public class DBusDaemon : GLib.Object, BaseDaemon {
-    private GLib.MainLoop _loop;
-    private GLib.DBusConnection _conn;
-    private GLib.List<Device> _devices;
-    private GLib.KeyFile _kf;
+	private struct ContextFactoryEntry {
+		public unowned DevidentServer.DeviceRegistryFactory factory;
+	}
 
-    [DBus(visible = false)]
-    public GLib.MainLoop loop {
-      get {
-        return this._loop;
-      }
-      construct {
-        this._loop = value;
-      }
-    }
+	public class Context : DevidentServer.Context {
+		private GLib.HashTable<string, ContextFactoryEntry?> _factories;
+		private GLib.HashTable<string, DevidentServer.Device> _devices;
+		private GLib.HashTable<string, Peas.PluginInfo> _plugins;
+		private Peas.Engine _engine;
+		private Peas.ExtensionSet _extensions;
 
-    [DBus(visible = false)]
-    public GLib.DBusConnection conn {
-      get {
-        return this._conn;
-      }
-      construct {
-        this._conn = value;
-      }
-    }
+		public override string[] devices {
+			owned get {
+				return this._factories.get_keys_as_array();
+			}
+		}
 
-    [DBus(visible = false)]
-    public GLib.KeyFile kf {
-      get {
-        return this._kf;
-      }
-    }
+		construct {
+			this._factories = new GLib.HashTable<string, ContextFactoryEntry?>(GLib.str_hash, GLib.str_equal);
+			this._devices = new GLib.HashTable<string, DevidentServer.Device>(GLib.str_hash, GLib.str_equal);
+			this._plugins = new GLib.HashTable<string, Peas.PluginInfo>(GLib.str_hash, GLib.str_equal);
 
-    public DBusDaemon(GLib.MainLoop loop, GLib.DBusConnection conn) throws GLib.Error {
-      Object(loop: loop, conn: conn);
-      this._kf = new GLib.KeyFile();
-      this._kf.load_from_file(SYSCONFDIR + "/expidus/devident.cfg", GLib.KeyFileFlags.NONE);
-      this._devices = new GLib.List<Device>();
-      this._devices.append(new AutoDevice(this));
-    }
+			this._engine = new Peas.Engine();
+			this._engine.enable_loader("lua5.1");
+			this._engine.enable_loader("python3");
+			this._engine.add_search_path(DevidentCommon.LIBDIR + "/devident/modules/", DevidentCommon.DATADIR + "/devident/modules/");
 
-    public void reload() throws GLib.Error {
-      this._kf.load_from_file(SYSCONFDIR + "/expidus/devident.cfg", GLib.KeyFileFlags.NONE);
-    }
+			this._extensions = new Peas.ExtensionSet(this._engine, typeof (DevidentServer.Device), "context", this);
+			this._extensions.extension_added.connect((info, obj) => {
+				if (!this._plugins.contains(info.get_module_name())) {
+					GLib.debug("Loading module \"%s\"", info.get_module_name());
+					this._plugins.set(info.get_module_name(), info);
 
-    [DBus(name = "GetDevice")]
-    public GLib.ObjectPath get_device_dbus(GLib.BusName sender) throws GLib.Error {
-      string? dev_string = get_device_string(this, sender);
-      if (dev_string == null) return new GLib.ObjectPath("/com/devident/device/auto");
+					try {
+						this.add_device((DevidentServer.Device)obj);
+					} catch (GLib.Error e) {
+						GLib.error("Failed to add device from module \"%s\" (%s:%d): %s", info.get_module_name(), e.domain.to_string(), e.code, e.message);
+					}
+				}
+			});
 
-      for (unowned var item = this._devices.first(); item != null; item = item.next) {
-        var dev = item.data as FileDevice;
-        if (dev == null) continue;
+			this._extensions.extension_removed.connect((info, obj) => {
+				if (this._plugins.contains(info.get_module_name())) {
+					this._plugins.remove(info.get_module_name());
+					try {
+						this.remove_device(((DevidentServer.Device)obj).id);
+					} catch (GLib.Error e) {
+						GLib.error("Failed to add device from module \"%s\" (%s:%d): %s", info.get_module_name(), e.domain.to_string(), e.code, e.message);
+					}
+				}
+			});
+		}
 
-        var name_pattern = dev.kf.get_value("device", "match_name");
-        if (GLib.Regex.match_simple(name_pattern, dev_string)) {
-          return new GLib.ObjectPath("/com/devident/device/%s".printf(dev.get_id()));
-        }
-      }
+		public override void rescan() throws GLib.Error {
+			this._engine.rescan_plugins();
+			foreach (var info in this._engine.get_plugin_list()) {
+				GLib.debug("Found module \"%s\"", info.get_module_name());
+				this._engine.try_load_plugin(info);
+			}
+		}
 
-      var d = GLib.Dir.open(SYSCONFDIR + "/expidus/devices.d", 0);
-      string? name = null;
+		public override DevidentServer.Device? find_device_by_id(string id) {
+			if (this._devices.contains(id)) {
+				return this._devices.get(id);
+			}
+			return null;
+		}
 
-      while ((name = d.read_name()) != null) {
-        var path = GLib.Path.build_filename(SYSCONFDIR + "/expidus/devices.d", name);
-        var kf = new GLib.KeyFile();
-        kf.load_from_file(path, GLib.KeyFileFlags.NONE);
+		public override DevidentServer.Device? find_device(string device) {
+			foreach (var dev in this._devices.get_values()) {
+				if (dev.matches(device)) return dev;
+			}
 
-        var name_pattern = kf.get_value("device", "match_name").replace("\"", "");
-        if (GLib.Regex.match_simple(name_pattern, dev_string)) {
-          var dev = new FileDevice(this, path);
-          this._devices.append(dev);
-          return new GLib.ObjectPath("/com/devident/device/%s".printf(dev.get_id()));
-        }
-      }
-      return new GLib.ObjectPath("/com/devident/device/auto");
-    }
+			foreach (var entry in this._factories.get_values()) {
+				var dev = entry.factory(device);
+				if (dev == null) continue;
 
-    public string get_version() throws GLib.Error {
-      return VERSION;
-    }
+				try {
+					dev.init(this);
+				} catch (GLib.Error e) {
+					return null;
+				}
 
-    public void quit() throws GLib.Error {
-      this.loop.quit();
-    }
-  }
+				this._devices.set(dev.id, dev);
+				return dev;
+			}
+			return null;
+		}
 
-  private void finish() {
-    Daemon.retval_send(255);
-    Daemon.signal_done();
-    Daemon.pid_file_remove();
-  }
+		public override void add_device(DevidentServer.Device device) throws DevidentCommon.ContextError {
+			if (!this._devices.contains(device.id)) {
+				try {
+					device.init(this);
+					this._devices.set(device.id, device);
+				} catch (GLib.Error e) {}
+			}
+		}
 
-  private void run() {
-    GLib.MainLoop loop = new GLib.MainLoop();
+		public override void remove_device(string id) throws DevidentCommon.ContextError {
+			this._factories.remove(id);
+			this._devices.remove(id);
+		}
 
-    GLib.Bus.own_name(GLib.BusType.SYSTEM, "com.devident", GLib.BusNameOwnerFlags.NONE, (conn, name) => {
-      try {
-        conn.register_object("/com/devident", new DBusDaemon(loop, conn));
-      } catch (GLib.Error e) {
-        Daemon.log(Daemon.LogPriority.ERR, "Failed to register object");
-        loop.quit();
-      }
-    });
+		public override void register_with_factory(string id, DevidentServer.DeviceRegistryFactory factory) throws DevidentCommon.ContextError {
+			if (!this._factories.contains(id)) {
+				ContextFactoryEntry entry = { factory };
+				this._factories.set(id, entry);
+			}
+		}
+	}
 
-    loop.run();
-  }
+	public static int main(string[] args) {
+		try {
+			var opctx = new GLib.OptionContext("- Device Identification Daemon");
+			opctx.set_help_enabled(true);
+			opctx.add_main_entries(options, null);
+			opctx.parse(ref args);
+		} catch (GLib.Error e) {
+			stderr.printf("%s: Failed to parse arguments (%s:%d): %s\n", GLib.Path.get_basename(args[0]), e.domain.to_string(), e.code, e.message);
+			return 1;
+		}
 
-  public int main(string[] args) {
-    try {
-      GLib.OptionContext opt_ctx = new GLib.OptionContext("- Device identification daemon");
-      opt_ctx.set_help_enabled(true);
-      opt_ctx.add_main_entries(options, null);
-      opt_ctx.parse(ref args);
-    } catch (GLib.OptionError e) {
-      stderr.printf("%s (%s): %s\n", GLib.Path.get_basename(args[0]), e.domain.to_string(), e.message);
-      return 1;
-    }
+		if (arg_version) {
+			stdout.printf("%s\n", DevidentCommon.VERSION);
+			return 0;
+		}
 
-    Daemon.log_ident = Daemon.pid_file_ident = Daemon.ident_from_argv0(args[0]);
+		try {
+			var ctx = (Context)GLib.Initable.@new(typeof (Context), null, null);
+			ctx.rescan();
+		} catch (GLib.Error e) {
+			stderr.printf("%s: failed to initialize daemon (%s:%d): %s\n", GLib.Path.get_basename(args[0]), e.domain.to_string(), e.code, e.message);
+			return 1;
+		}
 
-    if (arg_kill) {
-      try {
-        var conn = GLib.Bus.get_sync(GLib.BusType.SYSTEM);
-        var daemon = conn.get_proxy_sync<BaseDaemon>("com.devident", "/com/devident");
-        daemon.quit();
-        return 0;
-      } catch (GLib.Error e) {
-        Daemon.log(Daemon.LogPriority.WARNING, "Failed to kill daemon using DBus, falling back to PID file: (%s) %s", e.domain.to_string(), e.message);
-      }
-      int ret = Daemon.pid_file_kill_wait(Daemon.Sig.TERM, 5);
-      if (ret < 0) {
-        Daemon.log(Daemon.LogPriority.WARNING, "Failed to kill daemon using PID file.");
-      }
-      return ret < 0 ? 1 : 0;
-    }
-
-    if (arg_no_daemon) {
-      run();
-      return 0;
-    }
-
-    if (Daemon.reset_sigs(-1) < 0) {
-      Daemon.log(Daemon.LogPriority.ERR, "Failed to reset signal handlers");
-      return 1;
-    }
-
-    if (Daemon.unblock_sigs(-1) < 0) {
-      Daemon.log(Daemon.LogPriority.ERR, "Failed to unblock signals");
-      return 1;
-    }
-
-    var pid = Daemon.pid_file_is_running();
-    if (pid >= 0) {
-      Daemon.log(Daemon.LogPriority.ERR, "Device identification daemon is already running with PID file %u", pid);
-      return 1;
-    }
-
-    if (Daemon.retval_init() < 0) {
-      Daemon.log(Daemon.LogPriority.ERR, "Failed to create pipe");
-      return 1;
-    }
-
-    if ((pid = Daemon.fork()) < 0) {
-      Daemon.retval_done();
-      return 0;
-    } else if (pid > 0) {
-      int ret = Daemon.retval_wait(20);
-      if (ret < 0) {
-        Daemon.log(Daemon.LogPriority.ERR, "Could not receive return value of daemon.");
-        return 255;
-      }
-      
-      Daemon.log(Daemon.LogPriority.ERR, "Received exit code %d", ret);
-      return ret;
-    } else {
-      if (Daemon.close_all(-1) < 0) {
-        Daemon.log(Daemon.LogPriority.ERR, "Failed to close all file descriptors");
-        Daemon.retval_send(1);
-        finish();
-        return 1;
-      }
-
-      if (Daemon.pid_file_create() < 0) {
-        Daemon.log(Daemon.LogPriority.ERR, "Failed to create PID file");
-        Daemon.retval_send(2);
-        finish();
-        return 1;
-      }
-
-      if (Daemon.signal_init(Daemon.Sig.INT, Daemon.Sig.QUIT, 0) < 0) {
-        Daemon.log(Daemon.LogPriority.ERR, "Could not register signal handlers");
-        Daemon.retval_send(3);
-        finish();
-        return 1;
-      }
-
-      Daemon.retval_send(0);
-      Daemon.log(Daemon.LogPriority.INFO, "Daemon is online");
-      run();
-      finish();
-    }
-    return 0;
-  }
+		new GLib.MainLoop().run();
+		return 0;
+	}
 }

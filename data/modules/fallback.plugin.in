@@ -1,0 +1,7 @@
+[Plugin]
+Module=fallback
+Name=Fallback Device
+Description=Uses the standard Linux device interfaces for enumerating a device as a fallback.
+Authors=Tristan Ross <rosscomputerguy@protonmail.com>
+Copyright=Copyright Midstall Software, 2021
+Website=https://expidusos.com
