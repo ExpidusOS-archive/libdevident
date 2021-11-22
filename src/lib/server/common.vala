@@ -11,6 +11,6 @@ namespace DevidentServer {
 	}
 
 	public static string dbusify_string(string input) {
-		return input.replace(" ", "_").replace("-", "_");
+		return input.replace(" ", "_").replace("-", "_").replace(".", "");
 	}
 }

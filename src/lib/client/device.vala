@@ -68,6 +68,12 @@ namespace DevidentClient {
 			GLib.Type? type_ret = null;
 			
 			switch (type_name) {
+				case "Backlight":
+					type_ret = typeof (BacklightComponent);
+					break;
+				case "Display":
+					type_ret = typeof (DisplayComponent);
+					break;
 				case "Touchscreen":
 					type_ret = typeof (TouchscreenComponent);
 					break;

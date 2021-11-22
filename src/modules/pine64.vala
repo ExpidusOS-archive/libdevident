@@ -32,7 +32,7 @@ namespace PINE64 {
 		}
 
 		public override bool matches(string device) {
-			return GLib.Regex.match_simple(device, "Pine64 PinePhone Braveheart \\([0-9]\\.[0-9][a-z]?\\)");
+			return GLib.Regex.match_simple("Pine64 PinePhone Braveheart \\([0-9]\\.[0-9][a-z]?\\)", device);
 		}
 	}
 }

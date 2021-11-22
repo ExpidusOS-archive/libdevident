@@ -19,7 +19,7 @@ namespace devident {
 
 		public override string[] devices {
 			owned get {
-				return this._factories.get_keys_as_array();
+				return this._devices.get_keys_as_array();
 			}
 		}
 
@@ -76,6 +76,7 @@ namespace devident {
 
 		public override DevidentServer.Device? find_device(string device) {
 			foreach (var dev in this._devices.get_values()) {
+				if (dev.id == "fallback") continue;
 				if (dev.matches(device)) return dev;
 			}
 

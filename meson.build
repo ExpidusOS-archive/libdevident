@@ -81,7 +81,7 @@ pkg.generate(libdevident_server, description: 'A device identification library. 
 	name: 'devident-server-1.0')
 libdevident_server_dep = declare_dependency(link_with: libdevident_server, dependencies: [gobject, gio, libdevident_common_dep])
 
-modules = ['fallback', 'pine64']
+modules = ['alienware', 'fallback', 'hp', 'pine64']
 foreach name : modules
 	configure_file(input: 'data/modules/' + name + '.plugin.in', output: name + '.plugin',
 		configuration: conf_data,
