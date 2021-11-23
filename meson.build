@@ -43,7 +43,7 @@ build_conf = configure_file(input: 'src/build.vala.in', output: 'build.vala',
 libdevident_common = shared_library('devident-common', 'src/lib/common/component.vala', 'src/lib/common/context.vala', 'src/lib/common/device.vala', build_conf,
 	vala_header: 'devident-common.h',
 	vala_vapi: 'DevidentCommon-1.0.vapi',
-	vala_gir: 'DevidentCommon-1.0.gir',
+	vala_gir: 'devident-common-1.0.gir',
 	install_dir: [true, true, true, true],
 	install: true,
 	dependencies: [gobject, gio])
@@ -57,7 +57,7 @@ libdevident_client = shared_library('devident-client', 'src/lib/client/component
 		'src/lib/client/components/touchscreen.vala', 'src/lib/client/component.vala', 'src/lib/client/context.vala', 'src/lib/client/device.vala',
 	vala_header: 'devident-client.h',
 	vala_vapi: 'DevidentClient-1.0.vapi',
-	vala_gir: 'DevidentClient-1.0.gir',
+	vala_gir: 'devident-client-1.0.gir',
 	install_dir: [true, true, true, true],
 	install: true,
 	dependencies: [gobject, gio, libdevident_common_dep])
@@ -72,7 +72,7 @@ libdevident_server = shared_library('devident-server', 'src/lib/server/component
 		'src/lib/server/device.vala',
 	vala_header: 'devident-server.h',
 	vala_vapi: 'DevidentServer-1.0.vapi',
-	vala_gir: 'DevidentServer-1.0.gir',
+	vala_gir: 'devident-server-1.0.gir',
 	install_dir: [true, true, true, true],
 	install: true,
 	dependencies: [gobject, gio, libdevident_common_dep])

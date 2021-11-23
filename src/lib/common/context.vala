@@ -17,6 +17,7 @@ namespace DevidentCommon {
 
 		public virtual bool init(GLib.Cancellable? cancellable = null) throws GLib.Error {
 			if (this._dbus_conn == null) {
+				GLib.debug("No DBus connection was given, creating our own");
 				this._dbus_conn = GLib.Bus.get_sync(GLib.BusType.SYSTEM, cancellable);
 			}
 			return true;
