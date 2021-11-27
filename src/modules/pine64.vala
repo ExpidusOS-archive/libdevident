@@ -28,6 +28,7 @@ namespace PINE64 {
 			try {
 				this.add_component("screen", new DevidentServer.DisplayComponent("DSI-1", DevidentCommon.DisplayType.INTEGRATED | DevidentCommon.DisplayType.TOUCHSCREEN));
 				this.add_component("touchscreen", new DevidentServer.TouchscreenComponent("screen", "/dev/input/event1", true));
+				this.add_component("proc_opt", new DevidentServer.OptimizationComponent.process(true));
 			} catch (GLib.Error e) {}
 		}
 

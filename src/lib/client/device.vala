@@ -74,6 +74,9 @@ namespace DevidentClient {
 				case "Display":
 					type_ret = typeof (DisplayComponent);
 					break;
+				case "Optimization":
+					type_ret = typeof (OptimizationComponent);
+					break;
 				case "Touchscreen":
 					type_ret = typeof (TouchscreenComponent);
 					break;

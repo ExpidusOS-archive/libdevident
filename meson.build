@@ -54,7 +54,8 @@ libdevident_common_dep = declare_dependency(link_with: libdevident_common, depen
 
 # Client library
 libdevident_client = shared_library('devident-client', 'src/lib/client/components/backlight.vala', 'src/lib/client/components/display.vala',
-		'src/lib/client/components/touchscreen.vala', 'src/lib/client/component.vala', 'src/lib/client/context.vala', 'src/lib/client/device.vala',
+		'src/lib/client/components/optimization.vala', 'src/lib/client/components/touchscreen.vala', 'src/lib/client/component.vala', 'src/lib/client/context.vala',
+		'src/lib/client/device.vala',
 	vala_header: 'devident-client.h',
 	vala_vapi: 'DevidentClient-1.0.vapi',
 	vala_gir: 'devident-client-1.0.gir',
@@ -68,8 +69,8 @@ libdevident_client_dep = declare_dependency(link_with: libdevident_client, depen
 
 # Server library
 libdevident_server = shared_library('devident-server', 'src/lib/server/components/backlight.vala', 'src/lib/server/components/display.vala',
-		'src/lib/server/components/touchscreen.vala',	'src/lib/server/common.vala', 'src/lib/server/component.vala', 'src/lib/server/context.vala',
-		'src/lib/server/device.vala',
+		'src/lib/server/components/optimization.vala', 'src/lib/server/components/touchscreen.vala', 'src/lib/server/common.vala', 'src/lib/server/component.vala',
+		'src/lib/server/context.vala', 'src/lib/server/device.vala',
 	vala_header: 'devident-server.h',
 	vala_vapi: 'DevidentServer-1.0.vapi',
 	vala_gir: 'devident-server-1.0.gir',
