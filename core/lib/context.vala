@@ -28,6 +28,17 @@ namespace Devident {
           global_context = null;
         }
 #endif
+#if HAS_GMODULE
+        if (GLib.Module.supported()) {
+          try {
+            global_context = new GModuleContext();
+            return global_context;
+          } catch (GLib.Error e) {
+            GLib.critical(N_("Failed to create a new context: %s:%d: %s"), e.domain.to_string(), e.code, e.message);
+            global_context = null;
+          }
+        }
+#endif
 
         try {
           global_context = new Context();

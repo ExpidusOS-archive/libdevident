@@ -18,7 +18,6 @@ namespace Devident {
 
     public PeasContext() throws GLib.Error {
       Object();
-      this.init(null);
     }
 
     construct {

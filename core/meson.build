@@ -29,6 +29,10 @@ if libpeas.found()
   libdevident_core_rel_sources += ['lib/context/libpeas.vala']
 endif
 
+if gmodule.found()
+  libdevident_core_rel_sources += ['lib/context/gmodule.vala']
+endif
+
 foreach src : libdevident_core_rel_sources
   libdevident_core_sources += [join_paths(meson.current_source_dir(), src)]
 endforeach

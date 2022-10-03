@@ -3,4 +3,8 @@ core/lib/device.vala
 core/lib/context.vala
 core/lib/utils.vala
 core/lib/provider.vala
+
+core/lib/context/gmodule.vala
+core/lib/context/libpeas.vala
+
 core/lib/device/darwin.c

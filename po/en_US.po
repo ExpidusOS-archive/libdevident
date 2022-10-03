@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libdevident 0.2.0-prealpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-03 14:30-0700\n"
-"PO-Revision-Date: 2022-10-03 14:30-0700\n"
+"POT-Creation-Date: 2022-10-03 16:29-0700\n"
+"PO-Revision-Date: 2022-10-03 16:29-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -17,17 +17,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/lib/context.vala:14 core/lib/context.vala:24
+#: core/lib/context.vala:14
+#, c-format
+msgid "Failed to get the host device ID: %s:%d: %s"
+msgstr "Failed to get the host device ID: %s:%d: %s"
+
+#: core/lib/context.vala:27 core/lib/context.vala:37 core/lib/context.vala:47
 #, c-format
 msgid "Failed to create a new context: %s:%d: %s"
 msgstr "Failed to create a new context: %s:%d: %s"
 
-#: core/lib/context.vala:46
+#: core/lib/context.vala:71
 #, c-format
 msgid "Adding provider \"%s\" %p"
 msgstr "Adding provider \"%s\" %p"
 
-#: core/lib/context.vala:54
+#: core/lib/context.vala:79
 #, c-format
 msgid "Removing provider \"%s\" %p"
 msgstr "Removing provider \"%s\" %p"
+
+#: core/lib/context/gmodule.vala:63
+msgid "register_devident_plugin() not found"
+msgstr "register_devident_plugin() not found"
+
+#: core/lib/context/gmodule.vala:67
+#, c-format
+msgid "Unexpected type: got %s"
+msgstr "Unexpected type: got %s"
+
+#: core/lib/context/gmodule.vala:70
+msgid "Unexpected type: got null"
+msgstr "Unexpected type: got null"
+
+#: core/lib/context/libpeas.vala:46
+#, c-format
+msgid "Removing plugin \"%s\" %p"
+msgstr "Removing plugin \"%s\" %p"
+
+#: core/lib/context/libpeas.vala:55
+#, c-format
+msgid "Adding plugin \"%s\" %p"
+msgstr "Adding plugin \"%s\" %p"
