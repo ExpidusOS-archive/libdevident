@@ -1,4 +1,4 @@
-foreach name : ['device']
+foreach name : ['context', 'device']
   test('core/@0@'.format(name), executable('test-@0@'.format(name), name + '.vala',
       c_args: ['-I' + join_paths(meson.project_build_root(), 'core')],
       dependencies: [libdevident_core]),
