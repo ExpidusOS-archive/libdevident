@@ -81,6 +81,38 @@ namespace Devident {
       }
     }
 
+    internal GLib.List<string> get_cached_device_ids() {
+      var list = new GLib.List<string>();
+      foreach (var dev in this._devices) list.append(dev.id);
+      return list;
+    }
+
+    internal GLib.List<string> get_uncached_device_ids() {
+      var list = new GLib.List<string>();
+      foreach (var provider in this._providers.get_values()) {
+        var device_provider = provider.get_device_provider();
+        if (device_provider == null) continue;
+
+        var devlist = device_provider.get_device_ids();
+        foreach (var dev in devlist) {
+          if (list.find(dev) != null) continue;
+          list.append(dev);
+        }
+      }
+      return list;
+    }
+
+    public GLib.List<string> get_device_ids() {
+      var list = this.get_cached_device_ids();
+      var uncached = this.get_uncached_device_ids();
+
+      foreach (var item in uncached) {
+        if (list.find(item) != null) continue;
+        list.append(item);
+      }
+      return list;
+    }
+
     internal unowned Device? find_cached_device(string id) {
       foreach (unowned var device in this._devices) {
         if (device.id == id) return device;
@@ -109,6 +141,10 @@ namespace Devident {
         return uncached;
       }
       return cached;
+    }
+
+    public unowned Device? get_default() {
+      return this.find_device(this.device_id);
     }
   }
 }

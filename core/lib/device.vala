@@ -13,7 +13,6 @@ namespace Devident {
   }
 
   public interface DeviceProvider : GLib.Object {
-    public abstract string get_default_device_id();
     public abstract unowned Device? get_device(string id);
     public abstract GLib.List<string> get_device_ids();
   }
