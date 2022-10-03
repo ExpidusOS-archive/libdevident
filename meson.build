@@ -44,6 +44,8 @@ gmodule = dependency('gmodule-2.0', required: false)
 vadi = dependency('vadi-0.0', required: true)
 gio = dependency('gio-2.0', required: true)
 
+gxml = dependency('gxml-0.20', fallback: ['gxml'], required: false)
+
 conf_data.set('PREFIX', prefix)
 conf_data.set('BINDIR', bindir)
 conf_data.set('DATADIR', datadir)
@@ -57,3 +59,5 @@ conf_data.set('SOURCEDIR', meson.current_source_dir())
 
 subdir('po')
 subdir('core')
+
+subdir('xml', if_found: [gxml])

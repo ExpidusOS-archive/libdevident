@@ -1,2 +1,4 @@
 *.pot
-result
+/result
+/subprojects/*
+!/subprojects/*.wrap
