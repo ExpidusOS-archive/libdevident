@@ -1,0 +1,14 @@
+namespace Devident {
+  public const string LOCALDIR = "@LOCALDIR@";
+  public const string LIBDIR = "@LIBDIR@";
+  public const string DATADIR = "@DATADIR@";
+
+  public const bool HAS_LIBPEAS = @HAS_LIBPEAS@;
+  public const bool HAS_GMODULE = @HAS_GMODULE@;
+
+  public const string VERSION = "@VERSION@";
+  public const string BUILD_USER = "@BUILD_USER@";
+  public const string TARGET_SYSTEM = "@TARGET_SYSTEM@";
+
+  internal const string GETTEXT_PACKAGE = "libdevident";
+}

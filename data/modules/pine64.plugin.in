@@ -1,7 +1,0 @@
-[Plugin]
-Module=pine64
-Name=PINE64 Devices
-Description=Adds device definitions for any supported PINE64 devices.
-Authors=Tristan Ross <rosscomputerguy@protonmail.com>
-Copyright=Copyright Midstall Software, 2021
-Website=https://expidusos.com

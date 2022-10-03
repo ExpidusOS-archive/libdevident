@@ -1,0 +1,47 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1664753041,
+        "narHash": "sha256-0ogaD8PaGHluARFeupofvk1Nq9gpVeZdlFM0Kcwguys=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a62844b302507c7531ad68a86cb7aa54704c9cb4",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "vadi": "vadi"
+      }
+    },
+    "vadi": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1663630541,
+        "narHash": "sha256-yHEZ9DjhYmw7UV8AsvFsUHdGDa8ivu5hWNFo6Xp7fGI=",
+        "owner": "ExpidusOS",
+        "repo": "Vadi",
+        "rev": "4864ab757b0355498e6f888b6499d3ec86d1c368",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ExpidusOS",
+        "ref": "feat/nix",
+        "repo": "Vadi",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

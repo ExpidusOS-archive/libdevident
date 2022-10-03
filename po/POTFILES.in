@@ -1,0 +1,6 @@
+core/lib/build.vala.in
+core/lib/device.vala
+core/lib/context.vala
+core/lib/utils.vala
+core/lib/provider.vala
+core/lib/device/darwin.c
