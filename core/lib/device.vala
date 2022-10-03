@@ -18,36 +18,39 @@ namespace Devident {
     public abstract GLib.List<string> get_device_ids();
   }
 
-  public abstract class Device : GLib.Object {
-    public abstract string id { get; }
+  public abstract class Device : Component {
     public abstract DeviceKind kind { get; }
 
-    public static string? get_host_id() throws GLib.FileError {
-      string? dev_name = null;
+    public override bool is_root_component {
+      get {
+        return true;
+      }
+    }
 
+    public static string? get_host_id() throws GLib.FileError {
 #if TARGET_SYSTEM_DARWIN
-      dev_name = get_darwin_model();
-#elif TARGET_SYSTEM_WINDOWS
+      return get_darwin_model();
 #elif TARGET_SYSTEM_LINUX
       if (GLib.FileTest.test("/sys/devices/virtual/dmi/id/board_vendor", GLib.FileTest.IS_REGULAR)) {
-        dev_name = read_file("/sys/devices/virtual/dmi/id/board_vendor");
+        string dev_name = read_file("/sys/devices/virtual/dmi/id/board_vendor");
         string value = try_read_file("/sys/devices/virtual/dmi/id/board_name");
         if (value.length > 0) dev_name += " " + value;
-        return dev_name;
+        return dev_name.replace(" ", ",");
       }
 
       if (GLib.FileTest.test("/sys/devices/virtual/dmi/id/product_name", GLib.FileTest.IS_REGULAR)) {
-        dev_name = read_file("/sys/devices/virtual/dmi/id/product_name");
+        string dev_name = read_file("/sys/devices/virtual/dmi/id/product_name");
         string value = try_read_file("/sys/devices/virtual/dmi/id/product_version");
         if (value.length > 0) dev_name += " " + value;
-        return dev_name;
+        return dev_name.replace(" ", ",");
       }
 
       if (GLib.FileTest.test("/sys/firmware/devicetree/base/model", GLib.FileTest.IS_REGULAR)) {
-        return read_file("/sys/firmware/devicetree/base/model");
+        return read_file("/sys/firmware/devicetree/base/model").replace(" ", ",");
       }
+#else
+      return null;
 #endif
-      return dev_name;
     }
   }
 }
