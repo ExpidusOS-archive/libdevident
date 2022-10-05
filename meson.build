@@ -44,7 +44,7 @@ gmodule = dependency('gmodule-2.0', required: false)
 vadi = dependency('vadi-0.0', required: true)
 gio = dependency('gio-2.0', required: true)
 
-gxml = dependency('gxml-0.20', fallback: ['gxml'], required: false)
+gxml = dependency('gxml-0.20', fallback: ['gxml', 'libgxml_dep'], required: false)
 
 conf_data.set('PREFIX', prefix)
 conf_data.set('BINDIR', bindir)
@@ -56,6 +56,18 @@ conf_data.set('TARGET_SYSTEM', target_machine.system())
 conf_data.set('LOCALDIR', join_paths(datadir, 'locale'))
 conf_data.set('BUILDDIR', meson.current_build_dir())
 conf_data.set('SOURCEDIR', meson.current_source_dir())
+
+vala_defines = []
+
+if libpeas.found()
+  vala_defines += ['--define=HAS_LIBPEAS']
+endif
+
+if gmodule.found()
+  vala_defines += ['--define=HAS_GMODULE']
+endif
+
+add_project_arguments(vala_defines, language: 'vala')
 
 subdir('po')
 subdir('core')

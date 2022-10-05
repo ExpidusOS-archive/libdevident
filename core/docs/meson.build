@@ -4,6 +4,7 @@ libdevident_core_docs_devhelp = custom_target('core-docs-devhelp',
   command: [valadoc, '-o', join_paths(meson.current_build_dir(), 'devhelp'),
       '--doclet', 'devhelp', '@INPUT@', '--force',
       '--pkg', 'vadi-0.0', '--pkg', 'gio-2.0',
+      vala_defines,
       libdevident_core_docs_args],
   build_by_default: true)
 

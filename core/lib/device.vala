@@ -9,22 +9,64 @@ namespace Devident {
     PHONE,
     TV,
     CONSOLE,
-    WATCH
+    WATCH;
+
+    public static bool try_parse_name(string name, out DeviceKind result = null) {
+      var enumc = (GLib.EnumClass)(typeof (DeviceKind).class_ref());
+      unowned var eval = enumc.get_value_by_name(name);
+      if (eval == null) {
+        result = DeviceKind.DESKTOP;
+        return false;
+      }
+
+      result = (DeviceKind)eval.value;
+      return true;
+    }
+
+    public static bool try_parse_nick(string name, out DeviceKind result = null) {
+      var enumc = (GLib.EnumClass)(typeof (DeviceKind).class_ref());
+      unowned var eval = enumc.get_value_by_nick(name);
+      return_val_if_fail(eval != null, false);
+
+      if (eval == null) {
+        result = DeviceKind.DESKTOP;
+        return false;
+      }
+
+      result = (DeviceKind)eval.value;
+      return true;
+    }
+
+    public string to_nick() {
+      var enumc = (GLib.EnumClass)(typeof (DeviceKind).class_ref());
+      var eval = enumc.get_value(this);
+      return_val_if_fail(eval != null, null);
+      return eval.value_nick;
+    }
   }
 
   public interface DeviceProvider : GLib.Object {
-    public abstract unowned Device? get_device(string id);
+    public abstract Device? get_device(string id);
     public abstract GLib.List<string> get_device_ids();
   }
 
-  public abstract class Device : Component {
+  public abstract class Device : GLib.Object, Component {
     public abstract DeviceKind kind { get; }
+    public abstract string id { get; }
 
     public override bool is_root_component {
       get {
         return true;
       }
     }
+
+    construct {
+      assert(Component.is_valid_id(this.id));
+    }
+
+    public abstract bool has_component(string id);
+    public abstract Component? get_component(string id);
+    public abstract GLib.List<string> get_component_ids();
 
     public static string? get_host_id() throws GLib.FileError {
 #if TARGET_SYSTEM_DARWIN

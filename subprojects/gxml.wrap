@@ -1,4 +1,4 @@
 [wrap-git]
 directory=gxml
-url=https://gitlab.gnome.org/GNOME/gxml.git
+url=https://gitlab.gnome.org/RossComputerGuy/gxml.git
 revision=master

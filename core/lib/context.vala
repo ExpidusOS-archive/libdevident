@@ -120,12 +120,12 @@ namespace Devident {
       return null;
     }
 
-    internal unowned Device? find_uncached_device(string id) {
+    internal Device? find_uncached_device(string id) {
       foreach (var provider in this._providers.get_values()) {
         var device_provider = provider.get_device_provider();
         if (device_provider == null) continue;
 
-        unowned var device = device_provider.get_device(id);
+        var device = device_provider.get_device(id);
         if (device == null) continue;
         return device;
       }
@@ -135,10 +135,10 @@ namespace Devident {
     public unowned Device? find_device(string id) {
       unowned var cached = this.find_cached_device(id);
       if (cached == null) {
-        unowned var uncached = this.find_uncached_device(id);
+        var uncached = this.find_uncached_device(id);
         if (uncached == null) return null;
         this._devices.append(uncached);
-        return uncached;
+        return this._devices.find_custom(uncached, (a, b) => GLib.strcmp(a.id, b.id)).data;
       }
       return cached;
     }

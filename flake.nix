@@ -18,10 +18,16 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
+      gxml-depsFor = forAllSystems (system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in with pkgs; [ libxml2 glib libgee ]);
+
       packagesFor = forAllSystems (system:
         let
           pkgs = nixpkgsFor.${system};
           vadi-pkg = vadi.packages.${system}.default;
+          gxml-deps = gxml-depsFor.${system};
 
           darwinPackages = with pkgs; {
             native = [];
@@ -41,14 +47,15 @@
             vala
             uncrustify
           ] ++ pkgs.lib.optional (pkgs.stdenv.isDarwin) darwinPackages.native;
-          build = [ glib libpeas vadi-pkg ] ++ pkgs.lib.optional (pkgs.stdenv.isDarwin) darwinPackages.build;
+          build = [ glib libpeas vadi-pkg ]
+            ++ gxml-deps
+            ++ pkgs.lib.optional (pkgs.stdenv.isDarwin) darwinPackages.build;
         });
     in
     {
       packages = forAllSystems (system:
         let
           pkgs = nixpkgsFor.${system};
-          vadi-pkg = vadi.packages.${system}.default;
           systemPackages = packagesFor.${system};
         in {
           default = pkgs.stdenv.mkDerivation rec {
@@ -66,7 +73,6 @@
       devShells = forAllSystems (system:
         let
           pkgs = nixpkgsFor.${system};
-          vadi-pkg = vadi.packages.${system}.default;
           systemPackages = packagesFor.${system};
         in {
           default = pkgs.mkShell {

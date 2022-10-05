@@ -1,5 +1,5 @@
 namespace Devident {
-  public abstract class Component : GLib.Object {
+  public interface Component : GLib.Object {
     public abstract string id { get; }
 
     public virtual bool is_root_component {
@@ -18,10 +18,6 @@ namespace Devident {
       get {
         return null;
       }
-    }
-
-    construct {
-      assert(is_valid_id(this.id));
     }
 
     public abstract bool has_component(string id);
