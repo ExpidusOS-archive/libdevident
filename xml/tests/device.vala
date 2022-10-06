@@ -9,7 +9,7 @@ public static int main(string[] args) {
     foreach (var id in list) {
       var device = provider.get_device_from_path(devicedir_path + "/" + id + ".xml");
       assert(device != null);
-      GLib.info("%s - Info (%s)", id, device.info.to_string());
+      GLib.info("%s", device.to_string());
     }
   });
 

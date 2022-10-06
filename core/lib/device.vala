@@ -69,6 +69,15 @@ namespace Devident {
     public abstract Component? get_component(string id);
     public abstract GLib.List<string> get_component_ids();
 
+    public string to_string() {
+      var s = ((Component)this).to_string().split("\n");
+      var new_str = s[0] + "\nKind: %s".printf(this.kind.to_nick());
+      for (var i = 1; i < s.length; i++) {
+        new_str += "\n%s".printf(s[i]);
+      }
+      return new_str;
+    }
+
     public static string? get_host_id() throws GLib.FileError {
 #if TARGET_SYSTEM_DARWIN
       return get_darwin_model();

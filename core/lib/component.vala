@@ -77,6 +77,23 @@ namespace Devident {
     public abstract Component? get_component(string id);
     public abstract GLib.List<string> get_component_ids();
 
+    public string to_string() {
+      var header = "%s - %s".printf(this.id, this.info.to_string());
+
+      var cids = this.get_component_ids();
+      var body = "Components %lu".printf(cids.length());
+      if (cids.length() > 0) body += ":";
+
+      foreach (var cid in cids) {
+        var c = this.get_component(cid);
+        if (c == null) continue;
+
+        body += "\n\t" + c.to_string().replace("\n", "\n\t");
+      }
+
+      return "%s\n%s".printf(header, body);
+    }
+
     public bool has_component_path(string path) {
       var spath = path.split("/");
       var component = this;
