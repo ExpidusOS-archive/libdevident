@@ -16,7 +16,7 @@
     <component type="input" id="touchscreen">
       <kind>touch</kind>
       <component-info>
-        <name>input</name> <!-- TODO: find the libinput device name -->
+        <name>/dev/input/event7</name>
       </component-info>
     </component>
   </component>
