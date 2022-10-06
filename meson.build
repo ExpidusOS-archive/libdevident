@@ -1,4 +1,4 @@
-project('libdevident', 'vala', 'c', license: 'GPL-3.0-only', version: '0.2.0-prealpha')
+project('libdevident', 'vala', 'c', license: 'GPL-3.0-only', version: '0.2.0-alpha')
 
 vapi_dir = join_paths(meson.project_source_root(), 'vapi')
 add_project_arguments(['--vapidir', vapi_dir], language: 'vala')
