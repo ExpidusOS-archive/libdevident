@@ -10,5 +10,7 @@ namespace Devident {
   public const string BUILD_USER = "@BUILD_USER@";
   public const string TARGET_SYSTEM = "@TARGET_SYSTEM@";
 
+  public const string SOURCEDIR = "@SOURCEDIR@";
+
   internal const string GETTEXT_PACKAGE = "libdevident";
 }

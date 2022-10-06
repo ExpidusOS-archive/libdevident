@@ -45,6 +45,10 @@ namespace Devident {
     public ComponentInfoKind kind;
 
     public ComponentInfo() {}
+
+    public string to_string() {
+      return "%s (Vendor: \"%s\", Product: \"%s\") - %s".printf(this.name, this.vendor, this.product, this.kind.to_nick());
+    }
   }
 
   public interface Component : GLib.Object {

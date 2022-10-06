@@ -1,4 +1,4 @@
-foreach name : []
+foreach name : ['device']
   test('xml/@0@'.format(name), executable('test-@0@'.format(name), name + '.vala',
       c_args: ['-I' + join_paths(meson.project_build_root(), 'xml')],
       dependencies: [libdevident_xml]),

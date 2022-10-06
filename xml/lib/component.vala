@@ -16,7 +16,7 @@ namespace DevidentXml {
       elem = element.get_elements_by_tag_name("kind").item(0);
       this.kind = Devident.ComponentInfoKind.UNKNOWN;
       if (elem != null) {
-        Devident.ComponentInfoKind.try_parse_name(elem.text_content, out this.kind);
+        Devident.ComponentInfoKind.try_parse_nick(elem.text_content, out this.kind);
       }
     }
   }

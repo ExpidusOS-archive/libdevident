@@ -1,18 +1,30 @@
 namespace DevidentXml {
   public sealed class DeviceProvider : GLib.Object, Devident.DeviceProvider {
-    public Devident.Device? get_device(string id) {
+    public DeviceProvider() {
+      Object();
+    }
+
+    public Devident.Device? get_device_from_path(string path) {
       try {
-        var device = new Device(new GXml.Document.from_path(DATADIR + "/devident-xml/devices/%s.xml".printf(id)));
-        device._id = id;
+        var document = new GXml.Document.from_path(path);
+        document.read_from_file(GLib.File.new_for_path(path), null);
+
+        var device = new Device(document);
+        var bname = GLib.Path.get_basename(path);
+        var ix = bname.last_index_of_char('.', 0);
+        device._id = bname.substring(0, ix);
         return device;
       } catch (GLib.Error e) {
-        return null;
+        GLib.error("Failed to get device \"%s\": %s:%d: %s", path, e.domain.to_string(), e.code, e.message);
       }
     }
 
-    public GLib.List<string> get_device_ids() {
+    public Devident.Device? get_device(string id) {
+      return this.get_device_from_path(DATADIR + "/devident-xml/devices/%s.xml".printf(id));
+    }
+
+    public GLib.List<string> get_device_ids_in_path(string dirpath) {
       var list = new GLib.List<string>();
-      var dirpath = DATADIR + "/devident-xml/devices";
       try {
         var dir = GLib.Dir.open(dirpath, 0);
         string? name = null;
@@ -30,6 +42,10 @@ namespace DevidentXml {
         GLib.error("Failed to open directory \"%s\": %s:%d: %s", dirpath, e.domain.to_string(), e.code, e.message);
       }
       return list;
+    }
+
+    public GLib.List<string> get_device_ids() {
+      return this.get_device_ids_in_path(DATADIR + "/devident-xml/devices");
     }
   }
 
@@ -49,7 +65,9 @@ namespace DevidentXml {
 
     public GXml.DomElement element {
       get {
-        if (this._element == null) this._element = this.document.search_root_element_property();
+        if (this._element == null) {
+          this._element = this.document.document_element;
+        }
         return this._element;
       }
     }
@@ -73,7 +91,7 @@ namespace DevidentXml {
         var elem = this.document.get_elements_by_tag_name("kind").item(0);
         if (elem == null) return Devident.DeviceKind.DESKTOP;
 
-        if (Devident.DeviceKind.try_parse_name(elem.text_content, out value)) return value;
+        if (Devident.DeviceKind.try_parse_nick(elem.text_content, out value)) return value;
         return Devident.DeviceKind.DESKTOP;
       }
     }
@@ -83,8 +101,7 @@ namespace DevidentXml {
     }
 
     construct {
-      var root_elem = this.document.search_root_element_property();
-      assert_cmpstr(root_elem.tag_name, GLib.CompareOperator.EQ, "devident-device");
+      assert_cmpstr(this.document.document_element.node_name, GLib.CompareOperator.EQ, "devident-device");
     }
 
     public override bool has_component(string id) {
