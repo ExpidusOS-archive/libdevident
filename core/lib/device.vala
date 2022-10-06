@@ -5,6 +5,8 @@ namespace Devident {
 
   public enum DeviceKind {
     DESKTOP = 0,
+    LAPTOP,
+    TABLET,
     SERVER,
     PHONE,
     TV,
