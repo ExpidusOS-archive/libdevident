@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libdevident 0.2.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-06 11:04-0700\n"
-"PO-Revision-Date: 2022-10-06 11:04-0700\n"
+"POT-Creation-Date: 2022-10-06 11:50-0700\n"
+"PO-Revision-Date: 2022-10-06 11:50-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -16,6 +16,21 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/lib/component.vala:52
+#, c-format
+msgid "%s (Vendor: \"%s\", Product: \"%s\") - %s: (%s) %s"
+msgstr "%s (Vendor: \"%s\", Product: \"%s\") - %s: (%s) %s"
+
+#: core/lib/component.vala:83
+#, c-format
+msgid "%s - %s"
+msgstr "%s - %s"
+
+#: core/lib/component.vala:86
+#, c-format
+msgid "Components %lu"
+msgstr "Components %lu"
 
 #: core/lib/context.vala:14
 #, c-format

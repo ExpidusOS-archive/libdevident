@@ -43,12 +43,13 @@ namespace Devident {
     public string? vendor;
     public string? product;
     public string? description;
+    public string? website;
     public ComponentInfoKind kind;
 
     public ComponentInfo() {}
 
     public string to_string() {
-      return "%s (Vendor: \"%s\", Product: \"%s\") - %s: %s".printf(this.name, this.vendor, this.product, this.kind.to_nick(), this.description);
+      return N_("%s (Vendor: \"%s\", Product: \"%s\") - %s: (%s) %s").printf(this.name, this.vendor, this.product, this.kind.to_nick(), this.website, this.description);
     }
   }
 
@@ -79,10 +80,10 @@ namespace Devident {
     public abstract GLib.List<string> get_component_ids();
 
     public string to_string() {
-      var header = "%s - %s".printf(this.id, this.info.to_string());
+      var header = N_("%s - %s").printf(this.id, this.info.to_string());
 
       var cids = this.get_component_ids();
-      var body = "Components %lu".printf(cids.length());
+      var body = N_("Components %lu").printf(cids.length());
       if (cids.length() > 0) body += ":";
 
       foreach (var cid in cids) {

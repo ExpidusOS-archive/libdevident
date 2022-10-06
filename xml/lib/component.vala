@@ -14,6 +14,9 @@ namespace DevidentXml {
       col = element.get_elements_by_tag_name("description");
       if (col.length > 0) this.description = col.item(0).text_content;
 
+      col = element.get_elements_by_tag_name("website");
+      if (col.length > 0) this.website = col.item(0).text_content;
+
       col = element.get_elements_by_tag_name("kind");
       this.kind = Devident.ComponentInfoKind.UNKNOWN;
       if (col.length > 0) {

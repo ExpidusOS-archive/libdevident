@@ -5,6 +5,7 @@
     <vendor>Valve</vendor>
     <product>Steam Deck</product>
     <description>A portable gaming console by Valve.</description>
+    <website>https://www.steamdeck.com</website>
     <kind>motherboard</kind>
   </component-info>
   <component type="display" id="display-internal">

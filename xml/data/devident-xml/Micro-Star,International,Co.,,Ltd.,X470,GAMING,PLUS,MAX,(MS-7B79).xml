@@ -4,6 +4,7 @@
     <name>MSI X470 Gaming Plux Max</name>
     <vendor>MSI</vendor>
     <product>X470 Gaming Plus Max</product>
+    <website>https://www.msi.com/Motherboard/X470-GAMING-PLUS-MAX/support</website>
     <kind>motherboard</kind>
   </component-info>
 </devident-device>
