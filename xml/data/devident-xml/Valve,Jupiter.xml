@@ -13,6 +13,12 @@
       <name>eDP</name>
       <description>Internal display</description>
     </component-info>
+    <component type="input" id="touchscreen">
+      <kind>touch</kind>
+      <component-info>
+        <name>input</name> <!-- TODO: find the libinput device name -->
+      </component-info>
+    </component>
   </component>
   <component type="display" id="display-external">
     <component-info>

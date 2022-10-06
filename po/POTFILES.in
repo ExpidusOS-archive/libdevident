@@ -4,6 +4,9 @@ core/lib/device.vala
 core/lib/provider.vala
 core/lib/utils.vala
 
+core/lib/component/display.vala
+core/lib/component/input.vala
+
 core/lib/context/gmodule.vala
 core/lib/context/libpeas.vala
 

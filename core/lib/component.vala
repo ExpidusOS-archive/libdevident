@@ -64,7 +64,7 @@ namespace Devident {
     }
 
     public virtual Component? parent_component {
-      get {
+      owned get {
         return null;
       }
     }
@@ -79,7 +79,7 @@ namespace Devident {
     public abstract Component? get_component(string id);
     public abstract GLib.List<string> get_component_ids();
 
-    public string to_string() {
+    public string base_to_string() {
       var header = N_("%s - %s").printf(this.id, this.info.to_string());
 
       var cids = this.get_component_ids();
@@ -94,6 +94,10 @@ namespace Devident {
       }
 
       return "%s\n%s".printf(header, body);
+    }
+
+    public virtual string to_string() {
+      return this.base_to_string();
     }
 
     public bool has_component_path(string path) {

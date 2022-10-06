@@ -1,5 +1,5 @@
 namespace DevidentXml {
-  public sealed class DisplayComponent : Devident.DisplayComponent, Component {
+  public sealed class InputComponent : Devident.InputComponent, Component {
     private GXml.DomElement _element;
     private string? _id;
 
@@ -25,13 +25,24 @@ namespace DevidentXml {
       }
     }
 
+    public override Devident.InputComponentKind kind {
+      get {
+        var value = Devident.InputComponentKind.UNKNOWN;
+        var col = this.element.get_elements_by_tag_name("kind");
+        if (col.length == 0) return Devident.InputComponentKind.UNKNOWN;
+
+        if (Devident.InputComponentKind.try_parse_nick(col.item(0).text_content, out value)) return value;
+        return Devident.InputComponentKind.UNKNOWN;
+      }
+    }
+
     public override Devident.ComponentInfo info {
       owned get {
         return ((Component)this).info;
       }
     }
 
-    public DisplayComponent(GXml.DomElement element) {
+    public InputComponent(GXml.DomElement element) {
       Object(element: element);
     }
 

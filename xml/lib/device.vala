@@ -78,10 +78,10 @@ namespace DevidentXml {
     public override Devident.DeviceKind kind {
       get {
         var value = Devident.DeviceKind.DESKTOP;
-        var elem = this.element.get_elements_by_tag_name("kind").item(0);
-        if (elem == null) return Devident.DeviceKind.DESKTOP;
+        var col = this.element.get_elements_by_tag_name("kind");
+        if (col.length == 0) return Devident.DeviceKind.DESKTOP;
 
-        if (Devident.DeviceKind.try_parse_nick(elem.text_content, out value)) return value;
+        if (Devident.DeviceKind.try_parse_nick(col.item(0).text_content, out value)) return value;
         return Devident.DeviceKind.DESKTOP;
       }
     }

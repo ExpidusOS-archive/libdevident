@@ -5,7 +5,7 @@ build_conf_xml = configure_file(input: 'lib/build.vala.in', output: 'build.vala'
  configuration: conf_data_xml)
 
 libdevident_xml_rel_sources = ['lib/component.vala', 'lib/device.vala', 'lib/init.vala', 'lib/provider.vala',
-  'lib/component/display.vala']
+  'lib/component/display.vala', 'lib/component/input.vala']
 libdevident_xml_sources = []
 
 foreach src : libdevident_xml_rel_sources

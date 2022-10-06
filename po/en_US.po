@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libdevident 0.2.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-06 11:50-0700\n"
-"PO-Revision-Date: 2022-10-06 11:50-0700\n"
+"POT-Creation-Date: 2022-10-06 12:27-0700\n"
+"PO-Revision-Date: 2022-10-06 12:27-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -51,6 +51,15 @@ msgstr "Adding provider \"%s\" %p"
 #, c-format
 msgid "Removing provider \"%s\" %p"
 msgstr "Removing provider \"%s\" %p"
+
+#: core/lib/component/input.vala:80
+#, c-format
+msgid ""
+"\n"
+"Kind: %s"
+msgstr ""
+"\n"
+"Kind: %s"
 
 #: core/lib/context/gmodule.vala:63
 msgid "register_devident_plugin() not found"

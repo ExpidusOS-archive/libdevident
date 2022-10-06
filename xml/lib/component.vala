@@ -46,6 +46,8 @@ namespace DevidentXml {
       switch (element.get_attribute("type")) {
         case "display":
           return new DisplayComponent(element);
+        case "input":
+          return new InputComponent(element);
         case null:
           if (element.tag_name == "devident-device") {
             try {
