@@ -15,7 +15,7 @@ namespace DevidentXml {
         device._id = bname.substring(0, ix);
         return device;
       } catch (GLib.Error e) {
-        GLib.error("Failed to get device \"%s\": %s:%d: %s", path, e.domain.to_string(), e.code, e.message);
+        GLib.error(N_("Failed to get device \"%s\": %s:%d: %s"), path, e.domain.to_string(), e.code, e.message);
       }
     }
 

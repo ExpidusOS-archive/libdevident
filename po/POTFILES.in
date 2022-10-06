@@ -1,10 +1,15 @@
-core/lib/build.vala.in
-core/lib/device.vala
+core/lib/component.vala
 core/lib/context.vala
-core/lib/utils.vala
+core/lib/device.vala
 core/lib/provider.vala
+core/lib/utils.vala
 
 core/lib/context/gmodule.vala
 core/lib/context/libpeas.vala
 
 core/lib/device/darwin.c
+
+xml/lib/component.vala
+xml/lib/device.vala
+xml/lib/init.vala
+xml/lib/provider.vala

@@ -57,6 +57,8 @@ namespace Devident {
     }
 
     construct {
+      GLib.Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+      GLib.Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALDIR);
       this._providers = new GLib.HashTable<string, Provider>(GLib.str_hash, GLib.str_equal);
     }
 

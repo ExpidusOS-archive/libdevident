@@ -4,6 +4,13 @@ namespace DevidentXml {
       Object();
     }
 
-    public override void init(Vdi.Container container) {}
+    construct {
+      GLib.Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+      GLib.Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALDIR);
+    }
+
+    public override void init(Vdi.Container container) {
+      container.bind_type(typeof (Devident.DeviceProvider), typeof (DeviceProvider));
+    }
   }
 }
