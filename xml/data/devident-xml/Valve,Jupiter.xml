@@ -1,0 +1,9 @@
+<devident-device>
+  <kind>console</kind>
+  <component-info>
+    <name>Steam Deck</name>
+    <vendor>Valve</vendor>
+    <product>Steam Deck</product>
+    <kind>motherboard</kind>
+  </component-info>
+</devident-device>

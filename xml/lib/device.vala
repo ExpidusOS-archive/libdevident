@@ -61,6 +61,12 @@ namespace DevidentXml {
       }
     }
 
+    public override Devident.ComponentInfo info {
+      owned get {
+        return ((Component)this).info;
+      }
+    }
+
     public override Devident.DeviceKind kind {
       get {
         var value = Devident.DeviceKind.DESKTOP;

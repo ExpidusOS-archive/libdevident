@@ -1,6 +1,36 @@
 namespace DevidentXml {
+  public struct ComponentInfo : Devident.ComponentInfo {
+    public ComponentInfo(GXml.DomElement element) {
+      var elem = element.get_elements_by_tag_name("name").item(0);
+      assert(elem != null);
+      this.name = elem.text_content;
+
+      elem = element.get_elements_by_tag_name("vendor").item(0);
+      assert(elem != null);
+      this.vendor = elem.text_content;
+
+      elem = element.get_elements_by_tag_name("product").item(0);
+      assert(elem != null);
+      this.product = elem.text_content;
+
+      elem = element.get_elements_by_tag_name("kind").item(0);
+      this.kind = Devident.ComponentInfoKind.UNKNOWN;
+      if (elem != null) {
+        Devident.ComponentInfoKind.try_parse_name(elem.text_content, out this.kind);
+      }
+    }
+  }
+
   public interface Component : Devident.Component {
     public abstract GXml.DomElement element { get; }
+
+    public Devident.ComponentInfo info {
+      owned get {
+        var elem = this.element.get_elements_by_tag_name("component-info").item(0);
+        assert(elem != null);
+        return ComponentInfo(elem);
+      }
+    }
 
     public Devident.Component? parent_component {
       get {

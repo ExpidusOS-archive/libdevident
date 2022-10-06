@@ -35,6 +35,8 @@ pkg.generate(libdevident_xml_shlib,
   url: 'https://github.com/ExpidusOS/libdevident',
   version: longver)
 
+install_subdir(join_paths(meson.current_source_dir(), 'data', 'devident-xml'), install_dir: datadir)
+
 subdir('docs', if_found: [valadoc])
 
 if get_option('tests')

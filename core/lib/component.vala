@@ -1,6 +1,55 @@
 namespace Devident {
+  public enum ComponentInfoKind {
+    UNKNOWN = 0,
+    MOTHERBOARD,
+    SBC;
+
+    public static bool try_parse_name(string name, out ComponentInfoKind result = null) {
+      var enumc = (GLib.EnumClass)(typeof (ComponentInfoKind).class_ref());
+      unowned var eval = enumc.get_value_by_name(name);
+      if (eval == null) {
+        result = ComponentInfoKind.UNKNOWN;
+        return false;
+      }
+
+      result = (ComponentInfoKind)eval.value;
+      return true;
+    }
+
+    public static bool try_parse_nick(string name, out ComponentInfoKind result = null) {
+      var enumc = (GLib.EnumClass)(typeof (ComponentInfoKind).class_ref());
+      unowned var eval = enumc.get_value_by_nick(name);
+      return_val_if_fail(eval != null, false);
+
+      if (eval == null) {
+        result = ComponentInfoKind.UNKNOWN;
+        return false;
+      }
+
+      result = (ComponentInfoKind)eval.value;
+      return true;
+    }
+
+    public string to_nick() {
+      var enumc = (GLib.EnumClass)(typeof (ComponentInfoKind).class_ref());
+      var eval = enumc.get_value(this);
+      return_val_if_fail(eval != null, null);
+      return eval.value_nick;
+    }
+  }
+
+  public struct ComponentInfo {
+    public string name;
+    public string vendor;
+    public string product;
+    public ComponentInfoKind kind;
+
+    public ComponentInfo() {}
+  }
+
   public interface Component : GLib.Object {
     public abstract string id { get; }
+    public abstract ComponentInfo info { owned get; }
 
     public virtual bool is_root_component {
       get {

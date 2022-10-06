@@ -53,6 +53,7 @@ namespace Devident {
   public abstract class Device : GLib.Object, Component {
     public abstract DeviceKind kind { get; }
     public abstract string id { get; }
+    public abstract ComponentInfo info { owned get; }
 
     public override bool is_root_component {
       get {
