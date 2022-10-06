@@ -4,6 +4,19 @@
     <name>Steam Deck</name>
     <vendor>Valve</vendor>
     <product>Steam Deck</product>
+    <description>A portable gaming console by Valve.</description>
     <kind>motherboard</kind>
   </component-info>
+  <component type="display" id="display-internal">
+    <component-info>
+      <name>eDP</name>
+      <description>Internal display</description>
+    </component-info>
+  </component>
+  <component type="display" id="display-external">
+    <component-info>
+      <name>DisplayPort-0</name>
+      <description>External display connected by USB C</description>
+    </component-info>
+  </component>
 </devident-device>

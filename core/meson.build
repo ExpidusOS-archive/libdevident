@@ -18,7 +18,8 @@ endif
 build_conf_core = configure_file(input: 'lib/build.vala.in', output: 'build.vala',
  configuration: conf_data_core)
 
-libdevident_core_rel_sources = ['lib/component.vala', 'lib/context.vala', 'lib/device.vala', 'lib/provider.vala', 'lib/utils.vala']
+libdevident_core_rel_sources = ['lib/component.vala', 'lib/context.vala', 'lib/device.vala', 'lib/provider.vala', 'lib/utils.vala',
+  'lib/component/display.vala']
 libdevident_core_sources = []
 
 if target_machine.system() == 'darwin'

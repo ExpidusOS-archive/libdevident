@@ -9,7 +9,7 @@ namespace DevidentXml {
         var document = new GXml.Document.from_path(path);
         document.read_from_file(GLib.File.new_for_path(path), null);
 
-        var device = new Device(document);
+        var device = new Device(document.document_element);
         var bname = GLib.Path.get_basename(path);
         var ix = bname.last_index_of_char('.', 0);
         device._id = bname.substring(0, ix);
@@ -50,31 +50,21 @@ namespace DevidentXml {
   }
 
   public sealed class Device : Devident.Device, Component {
-    private GXml.Document _document;
     private GXml.DomElement _element;
     internal string? _id;
 
-    public GXml.Document document {
-      get {
-        return this._document;
-      }
-      construct {
-        this._document = value;
-      }
-    }
-
     public GXml.DomElement element {
       get {
-        if (this._element == null) {
-          this._element = this.document.document_element;
-        }
         return this._element;
+      }
+      construct {
+        this._element = value;
       }
     }
 
     public override string id {
       get {
-        if (this._id == null) this._id = GLib.Path.get_basename(this.document.url);
+        if (this._id == null) this._id = GLib.Path.get_basename(this.element.owner_document.url);
         return this._id;
       }
     }
@@ -88,7 +78,7 @@ namespace DevidentXml {
     public override Devident.DeviceKind kind {
       get {
         var value = Devident.DeviceKind.DESKTOP;
-        var elem = this.document.get_elements_by_tag_name("kind").item(0);
+        var elem = this.element.get_elements_by_tag_name("kind").item(0);
         if (elem == null) return Devident.DeviceKind.DESKTOP;
 
         if (Devident.DeviceKind.try_parse_nick(elem.text_content, out value)) return value;
@@ -96,12 +86,12 @@ namespace DevidentXml {
       }
     }
 
-    public Device(GXml.Document document) throws GLib.Error {
-      Object(document: document);
+    public Device(GXml.DomElement element) throws GLib.Error {
+      Object(element: element);
     }
 
     construct {
-      assert_cmpstr(this.document.document_element.node_name, GLib.CompareOperator.EQ, "devident-device");
+      assert_cmpstr(this.element.node_name, GLib.CompareOperator.EQ, "devident-device");
     }
 
     public override bool has_component(string id) {

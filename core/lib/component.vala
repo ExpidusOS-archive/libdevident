@@ -40,14 +40,15 @@ namespace Devident {
 
   public struct ComponentInfo {
     public string name;
-    public string vendor;
-    public string product;
+    public string? vendor;
+    public string? product;
+    public string? description;
     public ComponentInfoKind kind;
 
     public ComponentInfo() {}
 
     public string to_string() {
-      return "%s (Vendor: \"%s\", Product: \"%s\") - %s".printf(this.name, this.vendor, this.product, this.kind.to_nick());
+      return "%s (Vendor: \"%s\", Product: \"%s\") - %s: %s".printf(this.name, this.vendor, this.product, this.kind.to_nick(), this.description);
     }
   }
 

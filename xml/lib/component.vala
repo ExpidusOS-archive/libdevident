@@ -5,24 +5,25 @@ namespace DevidentXml {
       assert(elem != null);
       this.name = elem.text_content;
 
-      elem = element.get_elements_by_tag_name("vendor").item(0);
-      assert(elem != null);
-      this.vendor = elem.text_content;
+      var col = element.get_elements_by_tag_name("vendor");
+      if (col.length > 0) this.vendor = col.item(0).text_content;
 
-      elem = element.get_elements_by_tag_name("product").item(0);
-      assert(elem != null);
-      this.product = elem.text_content;
+      col = element.get_elements_by_tag_name("product");
+      if (col.length > 0) this.product = col.item(0).text_content;
 
-      elem = element.get_elements_by_tag_name("kind").item(0);
+      col = element.get_elements_by_tag_name("description");
+      if (col.length > 0) this.description = col.item(0).text_content;
+
+      col = element.get_elements_by_tag_name("kind");
       this.kind = Devident.ComponentInfoKind.UNKNOWN;
-      if (elem != null) {
-        Devident.ComponentInfoKind.try_parse_nick(elem.text_content, out this.kind);
+      if (col.length > 0) {
+        Devident.ComponentInfoKind.try_parse_nick(col.item(0).text_content, out this.kind);
       }
     }
   }
 
   public interface Component : Devident.Component {
-    public abstract GXml.DomElement element { get; }
+    public abstract GXml.DomElement element { get; construct; }
 
     public Devident.ComponentInfo info {
       owned get {
@@ -33,8 +34,26 @@ namespace DevidentXml {
     }
 
     public Devident.Component? parent_component {
-      get {
-        return null; // TODO
+      owned get {
+        return Component.new(this.element.parent_element);
+      }
+    }
+
+    public static Component? @new(GXml.DomElement element) {
+      switch (element.get_attribute("type")) {
+        case "display":
+          return new DisplayComponent(element);
+        case null:
+          if (element.tag_name == "devident-device") {
+            try {
+              return new Device(element);
+            } catch {
+              return null;
+            }
+          }
+          return null;
+        default:
+          return null;
       }
     }
 
@@ -50,7 +69,7 @@ namespace DevidentXml {
       var collection = this.element.get_elements_by_tag_name("component").to_array();
       foreach (var elem in collection) {
         if (elem.id == id) {
-          return null; // TODO
+          return Component.new(elem);
         }
       }
       return null;
