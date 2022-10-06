@@ -72,23 +72,24 @@ namespace Devident {
 #if TARGET_SYSTEM_DARWIN
       return get_darwin_model();
 #elif TARGET_SYSTEM_LINUX
-      if (GLib.FileTest.test("/sys/devices/virtual/dmi/id/board_vendor", GLib.FileTest.IS_REGULAR)) {
+      if (GLib.FileUtils.test("/sys/devices/virtual/dmi/id/board_vendor", GLib.FileTest.IS_REGULAR)) {
         string dev_name = read_file("/sys/devices/virtual/dmi/id/board_vendor");
         string value = try_read_file("/sys/devices/virtual/dmi/id/board_name");
         if (value.length > 0) dev_name += " " + value;
         return dev_name.replace(" ", ",");
       }
 
-      if (GLib.FileTest.test("/sys/devices/virtual/dmi/id/product_name", GLib.FileTest.IS_REGULAR)) {
+      if (GLib.FileUtils.test("/sys/devices/virtual/dmi/id/product_name", GLib.FileTest.IS_REGULAR)) {
         string dev_name = read_file("/sys/devices/virtual/dmi/id/product_name");
         string value = try_read_file("/sys/devices/virtual/dmi/id/product_version");
         if (value.length > 0) dev_name += " " + value;
         return dev_name.replace(" ", ",");
       }
 
-      if (GLib.FileTest.test("/sys/firmware/devicetree/base/model", GLib.FileTest.IS_REGULAR)) {
+      if (GLib.FileUtils.test("/sys/firmware/devicetree/base/model", GLib.FileTest.IS_REGULAR)) {
         return read_file("/sys/firmware/devicetree/base/model").replace(" ", ",");
       }
+      return null;
 #else
       return null;
 #endif
