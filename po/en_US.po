@@ -1,0 +1,90 @@
+# English translations for libdevident package.
+# Copyright (C) 2022 Midstall Software
+# This file is distributed under the same license as the libdevident package.
+# Automatically generated, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libdevident 0.2.0-alpha\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-06 12:27-0700\n"
+"PO-Revision-Date: 2022-10-06 12:27-0700\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/lib/component.vala:52
+#, c-format
+msgid "%s (Vendor: \"%s\", Product: \"%s\") - %s: (%s) %s"
+msgstr "%s (Vendor: \"%s\", Product: \"%s\") - %s: (%s) %s"
+
+#: core/lib/component.vala:83
+#, c-format
+msgid "%s - %s"
+msgstr "%s - %s"
+
+#: core/lib/component.vala:86
+#, c-format
+msgid "Components %lu"
+msgstr "Components %lu"
+
+#: core/lib/context.vala:14
+#, c-format
+msgid "Failed to get the host device ID: %s:%d: %s"
+msgstr "Failed to get the host device ID: %s:%d: %s"
+
+#: core/lib/context.vala:27 core/lib/context.vala:37 core/lib/context.vala:47
+#, c-format
+msgid "Failed to create a new context: %s:%d: %s"
+msgstr "Failed to create a new context: %s:%d: %s"
+
+#: core/lib/context.vala:73
+#, c-format
+msgid "Adding provider \"%s\" %p"
+msgstr "Adding provider \"%s\" %p"
+
+#: core/lib/context.vala:81
+#, c-format
+msgid "Removing provider \"%s\" %p"
+msgstr "Removing provider \"%s\" %p"
+
+#: core/lib/component/input.vala:80
+#, c-format
+msgid ""
+"\n"
+"Kind: %s"
+msgstr ""
+"\n"
+"Kind: %s"
+
+#: core/lib/context/gmodule.vala:63
+msgid "register_devident_plugin() not found"
+msgstr "register_devident_plugin() not found"
+
+#: core/lib/context/gmodule.vala:67
+#, c-format
+msgid "Unexpected type: got %s"
+msgstr "Unexpected type: got %s"
+
+#: core/lib/context/gmodule.vala:70
+msgid "Unexpected type: got null"
+msgstr "Unexpected type: got null"
+
+#: core/lib/context/libpeas.vala:46
+#, c-format
+msgid "Removing plugin \"%s\" %p"
+msgstr "Removing plugin \"%s\" %p"
+
+#: core/lib/context/libpeas.vala:55
+#, c-format
+msgid "Adding plugin \"%s\" %p"
+msgstr "Adding plugin \"%s\" %p"
+
+#: xml/lib/device.vala:18
+#, c-format
+msgid "Failed to get device \"%s\": %s:%d: %s"
+msgstr "Failed to get device \"%s\": %s:%d: %s"

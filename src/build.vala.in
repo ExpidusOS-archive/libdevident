@@ -1,6 +1,0 @@
-namespace DevidentCommon {
-  public const string LIBDIR = "@LIBDIR@";
-  public const string DATADIR = "@DATADIR@";
-  public const string SYSCONFDIR = "@SYSCONFDIR@";
-  public const string VERSION = @VERSION@;
-}

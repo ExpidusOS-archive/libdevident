@@ -1,16 +1,27 @@
 # libdevident
 
-A versatile device identification library. `libdevident` is designed in mind for reporting information on the device being used so applications can tune themselves for different devices without much issue.
-
-## Dependencies
-* `libdaemon`
-* `gio-2.0`
-* `glib-2.0`
-* `gobject-2.0`
-* vala (host)
+A (nearly) universal device identification modular library written in Vala.
 
 ## Features
-* DBus activatable service
-* Per-device configuration files using regex
-* Overridable applications
-* Fallback virtual device
+
+- GModule and `libpeas` plugin loaders
+- Context based allowing for multiple instances in a single program
+- Daemonless
+- Loadable device identification files in `xml`
+- Supports both macOS and Linux
+
+## Dependencies
+
+### Host
+
+- `gettext` tools
+- `gobject-introspection`
+- `vala`
+
+### Target
+
+- `libpeas` (*optional* but recommended)
+- `gmodule-2.0` (*optional* but recommended)
+- `gxml` (*optional* but recommended)
+- `gio-2.0`
+- `vadi`

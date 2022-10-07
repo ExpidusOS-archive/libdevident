@@ -1,0 +1,10 @@
+<devident-device>
+  <kind>laptop</kind>
+  <component-info>
+    <name>Apple 16-inch MacBook Pro</name>
+    <vendor>Apple</vendor>
+    <product>MacBook Pro (16-inch)</product>
+    <website>https://www.apple.com/shop/buy-mac/macbook-pro/16-inch</website>
+    <kind>motherboard</kind>
+  </component-info>
+</devident-device>
