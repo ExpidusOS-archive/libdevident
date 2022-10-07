@@ -49,13 +49,6 @@ gio = dependency('gio-2.0', required: true)
 libintl = meson.get_compiler('c').find_library('intl', required: false)
 gxml = dependency('gxml-0.20', fallback: ['gxml', 'libgxml_dep'], required: false)
 
-gee = dependency('gee-0.8', required: gxml.found())
-if gee.found()
-  gee_girdir = gee.get_variable('datadir') / 'gir-1.0'
-  gee_vapidir = gee.get_variable('datadir') / 'vala' / 'vapi'
-  add_project_arguments(['--vapidir', gee_vapidir], language: 'vala')
-endif
-
 conf_data.set('PREFIX', prefix)
 conf_data.set('BINDIR', bindir)
 conf_data.set('DATADIR', datadir)
