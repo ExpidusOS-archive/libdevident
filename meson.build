@@ -21,8 +21,8 @@ conf_data = configuration_data()
 i18n_args = ['--package-version=@0@'.format(longver), '--copyright-holder=Midstall Software']
 
 if git.found()
-	git_commit = run_command([git, 'rev-parse', '--short', 'HEAD'])
-	git_branch = run_command([git, 'rev-parse', '--abbrev-ref', 'HEAD'])
+  git_commit = run_command([git, 'rev-parse', '--short', 'HEAD'])
+  git_branch = run_command([git, 'rev-parse', '--abbrev-ref', 'HEAD'])
   git_config_username = run_command([git, 'config', '--get', 'user.name'])
 
   if git_commit.returncode() == 0 and git_branch.returncode() == 0
