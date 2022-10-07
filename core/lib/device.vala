@@ -1,6 +1,6 @@
 namespace Devident {
 #if TARGET_SYSTEM_DARWIN
-  internal extern string? get_darwin_model();
+  internal extern string ? get_darwin_model();
 #endif
 
   public enum DeviceKind {
@@ -14,7 +14,7 @@ namespace Devident {
     WATCH;
 
     public static bool try_parse_name(string name, out DeviceKind result = null) {
-      var enumc = (GLib.EnumClass)(typeof (DeviceKind).class_ref());
+      var enumc        = (GLib.EnumClass)(typeof(DeviceKind).class_ref());
       unowned var eval = enumc.get_value_by_name(name);
       if (eval == null) {
         result = DeviceKind.DESKTOP;
@@ -26,7 +26,7 @@ namespace Devident {
     }
 
     public static bool try_parse_nick(string name, out DeviceKind result = null) {
-      var enumc = (GLib.EnumClass)(typeof (DeviceKind).class_ref());
+      var enumc        = (GLib.EnumClass)(typeof(DeviceKind).class_ref());
       unowned var eval = enumc.get_value_by_nick(name);
       return_val_if_fail(eval != null, false);
 
@@ -40,16 +40,17 @@ namespace Devident {
     }
 
     public string to_nick() {
-      var enumc = (GLib.EnumClass)(typeof (DeviceKind).class_ref());
-      var eval = enumc.get_value(this);
+      var enumc = (GLib.EnumClass)(typeof(DeviceKind).class_ref());
+      var eval  = enumc.get_value(this);
       return_val_if_fail(eval != null, null);
       return eval.value_nick;
     }
   }
 
   public interface DeviceProvider : GLib.Object {
-    public abstract Device? get_device(string id);
-    public abstract GLib.List<string> get_device_ids();
+    public abstract Device ? get_device(string id);
+
+    public abstract GLib.List <string> get_device_ids();
   }
 
   public abstract class Device : GLib.Object, Component {
@@ -68,11 +69,12 @@ namespace Devident {
     }
 
     public abstract bool has_component(string id);
-    public abstract Component? get_component(string id);
-    public abstract GLib.List<string> get_component_ids();
+    public abstract Component ? get_component(string id);
+
+    public abstract GLib.List <string> get_component_ids();
 
     public string to_string() {
-      var s = this.base_to_string().split("\n");
+      var s       = this.base_to_string().split("\n");
       var new_str = s[0] + "\nKind: %s".printf(this.kind.to_nick());
       for (var i = 1; i < s.length; i++) {
         new_str += "\n%s".printf(s[i]);
@@ -80,21 +82,25 @@ namespace Devident {
       return new_str;
     }
 
-    public static string? get_host_id() throws GLib.FileError {
+    public static string ? get_host_id() throws GLib.FileError {
 #if TARGET_SYSTEM_DARWIN
       return "Apple," + get_darwin_model();
 #elif TARGET_SYSTEM_LINUX
       if (GLib.FileUtils.test("/sys/devices/virtual/dmi/id/board_vendor", GLib.FileTest.IS_REGULAR)) {
         string dev_name = read_file("/sys/devices/virtual/dmi/id/board_vendor");
-        string value = try_read_file("/sys/devices/virtual/dmi/id/board_name");
-        if (value.length > 0) dev_name += " " + value;
+        string value    = try_read_file("/sys/devices/virtual/dmi/id/board_name");
+        if (value.length > 0) {
+          dev_name += " " + value;
+        }
         return dev_name.replace(" ", ",");
       }
 
       if (GLib.FileUtils.test("/sys/devices/virtual/dmi/id/product_name", GLib.FileTest.IS_REGULAR)) {
         string dev_name = read_file("/sys/devices/virtual/dmi/id/product_name");
-        string value = try_read_file("/sys/devices/virtual/dmi/id/product_version");
-        if (value.length > 0) dev_name += " " + value;
+        string value    = try_read_file("/sys/devices/virtual/dmi/id/product_version");
+        if (value.length > 0) {
+          dev_name += " " + value;
+        }
         return dev_name.replace(" ", ",");
       }
 

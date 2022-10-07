@@ -10,7 +10,7 @@ namespace DevidentXml {
     }
 
     public override void init(Vdi.Container container) {
-      container.bind_type(typeof (Devident.DeviceProvider), typeof (DeviceProvider));
+      container.bind_type(typeof(Devident.DeviceProvider), typeof(DeviceProvider));
     }
   }
 }

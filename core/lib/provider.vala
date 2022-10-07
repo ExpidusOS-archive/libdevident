@@ -15,8 +15,8 @@ namespace Devident {
 
     public abstract void init(Vdi.Container container);
 
-    public DeviceProvider? get_device_provider() {
-      return this._container.get(typeof (DeviceProvider)) as DeviceProvider;
+    public DeviceProvider ? get_device_provider() {
+      return this._container.get(typeof(DeviceProvider)) as DeviceProvider;
     }
   }
 }

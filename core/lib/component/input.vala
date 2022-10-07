@@ -8,7 +8,7 @@ namespace Devident {
     KEYBOARD;
 
     public static bool try_parse_name(string name, out InputComponentKind result = null) {
-      var enumc = (GLib.EnumClass)(typeof (InputComponentKind).class_ref());
+      var enumc        = (GLib.EnumClass)(typeof(InputComponentKind).class_ref());
       unowned var eval = enumc.get_value_by_name(name);
       if (eval == null) {
         result = InputComponentKind.UNKNOWN;
@@ -20,7 +20,7 @@ namespace Devident {
     }
 
     public static bool try_parse_nick(string name, out InputComponentKind result = null) {
-      var enumc = (GLib.EnumClass)(typeof (InputComponentKind).class_ref());
+      var enumc        = (GLib.EnumClass)(typeof(InputComponentKind).class_ref());
       unowned var eval = enumc.get_value_by_nick(name);
       return_val_if_fail(eval != null, false);
 
@@ -34,8 +34,8 @@ namespace Devident {
     }
 
     public string to_nick() {
-      var enumc = (GLib.EnumClass)(typeof (InputComponentKind).class_ref());
-      var eval = enumc.get_value(this);
+      var enumc = (GLib.EnumClass)(typeof(InputComponentKind).class_ref());
+      var eval  = enumc.get_value(this);
       return_val_if_fail(eval != null, null);
       return eval.value_nick;
     }
@@ -52,21 +52,22 @@ namespace Devident {
       }
     }
 
-    public virtual Component? parent_component {
+    public virtual Component ?parent_component {
       owned get {
         return null;
       }
     }
 
-    public virtual Component? root_component {
+    public virtual Component ?root_component {
       get {
         return null;
       }
     }
 
     public abstract bool has_component(string id);
-    public abstract Component? get_component(string id);
-    public abstract GLib.List<string> get_component_ids();
+    public abstract Component ? get_component(string id);
+
+    public abstract GLib.List <string> get_component_ids();
 
     construct {
       if (this.kind == InputComponentKind.TOUCH) {
@@ -76,7 +77,7 @@ namespace Devident {
     }
 
     public string to_string() {
-      var s = this.base_to_string().split("\n");
+      var s       = this.base_to_string().split("\n");
       var new_str = s[0] + N_("\nKind: %s").printf(this.kind.to_nick());
       for (var i = 1; i < s.length; i++) {
         new_str += "\n%s".printf(s[i]);

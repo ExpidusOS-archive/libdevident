@@ -27,7 +27,8 @@ namespace DevidentXml {
       this._context.remove_provider(this._provider);
     }
 
-    public void update_state() {}
+    public void update_state() {
+    }
   }
 #endif
 
@@ -50,7 +51,7 @@ namespace DevidentXml {
 
   [CCode(cname = "register_devident_plugin")]
   internal GLib.Type register_plugin(GLib.Module module) {
-    return typeof (GModulePlugin);
+    return typeof(GModulePlugin);
   }
 #endif
 }
