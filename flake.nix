@@ -11,7 +11,12 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, vadi, gxml }:
+  inputs.expidus-sdk = {
+    url = github:ExpidusOS/sdk;
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = { self, nixpkgs, vadi, gxml, expidus-sdk }:
     let
       supportedSystems = [
         "aarch64-linux"
@@ -28,13 +33,14 @@
           pkgs = nixpkgsFor.${system};
           vadi-pkg = vadi.packages.${system}.default;
           gxml-pkg = gxml.packages.${system}.default;
+          expidus-sdk-pkg = expidus-sdk.packages.${system}.default;
         in with pkgs; {
           native = [
             meson
             ninja
             pkg-config
             vala
-            uncrustify
+            expidus-sdk-pkg
           ];
           build = [
             glib

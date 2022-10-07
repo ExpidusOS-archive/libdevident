@@ -36,7 +36,9 @@ if git.found()
   endif
 endif
 
-uncrustify = find_program('uncrustify', native: true, required: false)
+sdk = dependency('expidus-sdk', native: false, required: false, include_type: 'system', method: 'pkg-config')
+uncrustify = find_program('uncrustify', sdk.get_variable('bindir'), required: sdk.found())
+
 valadoc = find_program('valadoc', required: get_option('docs'), native: true)
 
 libpeas = dependency('libpeas-1.0', required: false)

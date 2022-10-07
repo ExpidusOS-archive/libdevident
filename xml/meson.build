@@ -12,8 +12,10 @@ foreach src : libdevident_xml_rel_sources
   libdevident_xml_sources += [join_paths(meson.current_source_dir(), src)]
 endforeach
 
-run_target('xml-prettier',
-  command: [uncrustify, '-c', join_paths(meson.project_source_root(), 'uncrustify.cfg'), '--no-backup', libdevident_xml_sources])
+if uncrustify.found()
+  run_target('xml-prettier',
+    command: [uncrustify, '--no-backup', libdevident_xml_sources])
+endif
 
 libdevident_xml_sources += [build_conf_xml]
 libdevident_xml_deps = [libdevident_core, gxml]
