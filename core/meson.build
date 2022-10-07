@@ -42,7 +42,7 @@ run_target('core-prettier',
   command: [uncrustify, '-c', join_paths(meson.project_source_root(), 'uncrustify.cfg'), '--no-backup', libdevident_core_sources])
 
 libdevident_core_sources += [build_conf_core]
-libdevident_core_deps = [vadi, gio]
+libdevident_core_deps = [vadi, gio, libintl]
 libdevident_core_docs_args = ['--package-name=libdevident', '--package-version=@0@'.format(shortver)]
 
 if libpeas.found()

@@ -82,7 +82,7 @@ namespace Devident {
 
     public static string? get_host_id() throws GLib.FileError {
 #if TARGET_SYSTEM_DARWIN
-      return get_darwin_model();
+      return "Apple," + get_darwin_model();
 #elif TARGET_SYSTEM_LINUX
       if (GLib.FileUtils.test("/sys/devices/virtual/dmi/id/board_vendor", GLib.FileTest.IS_REGULAR)) {
         string dev_name = read_file("/sys/devices/virtual/dmi/id/board_vendor");

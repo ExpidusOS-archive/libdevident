@@ -44,6 +44,7 @@ gmodule = dependency('gmodule-2.0', required: false)
 vadi = dependency('vadi-0.0', required: true)
 gio = dependency('gio-2.0', required: true)
 
+libintl = meson.get_compiler('c').find_library('intl', required: false)
 gxml = dependency('gxml-0.20', fallback: ['gxml', 'libgxml_dep'], required: false)
 
 conf_data.set('PREFIX', prefix)

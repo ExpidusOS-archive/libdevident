@@ -13,6 +13,16 @@ public static int main(string[] args) {
     }
   });
 
+  GLib.Test.add_func("/xml/device-provider/get-device/host", () => {
+    try {
+      var provider = new DevidentXml.DeviceProvider();
+      var device = provider.get_device_from_path(devicedir_path + "/%s.xml".printf(Devident.Device.get_host_id()));
+      GLib.info("%s", device.to_string());
+    } catch (GLib.Error e) {
+      GLib.error("Failed to get host device: %s:%d: %s", e.domain.to_string(), e.code, e.message);
+    }
+  });
+
   GLib.Test.add_func("/xml/device-provider/get-device-ids", () => {
     var provider = new DevidentXml.DeviceProvider();
     var list = provider.get_device_ids_in_path(devicedir_path);
