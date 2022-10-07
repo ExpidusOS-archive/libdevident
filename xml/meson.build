@@ -4,6 +4,13 @@ conf_data_xml.merge_from(conf_data)
 build_conf_xml = configure_file(input: 'lib/build.vala.in', output: 'build.vala',
  configuration: conf_data_xml)
 
+if libpeas.found()
+  configure_file(input: 'lib/xml.plugin.in', output: 'devident-xml.plugin',
+    configuration: conf_data_xml,
+    install: true,
+    install_dir: join_paths(libdir, 'devident', 'plugins'))
+endif
+
 libdevident_xml_rel_sources = ['lib/component.vala', 'lib/device.vala', 'lib/init.vala', 'lib/provider.vala',
   'lib/component/display.vala', 'lib/component/input.vala']
 libdevident_xml_sources = []
@@ -37,6 +44,8 @@ pkg.generate(libdevident_xml_shlib,
   description: 'XML loader for libdevident',
   url: 'https://github.com/ExpidusOS/libdevident',
   version: longver)
+
+message(libdevident_xml_shlib.name())
 
 install_subdir(join_paths(meson.current_source_dir(), 'data', 'devident-xml'), install_dir: datadir)
 
