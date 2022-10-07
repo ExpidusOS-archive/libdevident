@@ -36,7 +36,14 @@
             vala
             uncrustify
           ];
-          build = [ glib libpeas vadi-pkg gxml-pkg ];
+          build = [
+            glib
+            libpeas
+            libxml2
+            libgee
+            vadi-pkg
+            gxml-pkg
+          ];
         });
     in
     {
