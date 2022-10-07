@@ -32,11 +32,9 @@ namespace Devident {
 
       this._plugin_set = new Peas.ExtensionSet(this._plugin_engine, typeof(Peas.Activatable), "object", this);
 
-      this._plugin_set.foreach ((pset, info, extension) => {
+      this._plugin_set.foreach((pset, info, extension) => {
         this.plugin_added(info, extension as Peas.Activatable);
-      }) {
-        ;
-      }
+      });
 
       this._plugin_set.extension_added.connect((info, obj) => {
         this.plugin_added(info, obj as Peas.Activatable);

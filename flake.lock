@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "gxml": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1665161615,
+        "narHash": "sha256-CSR7kxLnS5DQz/4jywpDt3YVeMB3DKeWmNnaUvde8Tw=",
+        "ref": "refs/heads/master",
+        "rev": "3e7166db0dd4f04283ab48e59ff79ef27c8f6e50",
+        "revCount": 2102,
+        "type": "git",
+        "url": "https://gitlab.gnome.org/RossComputerGuy/gxml.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.gnome.org/RossComputerGuy/gxml.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1664753041,
@@ -16,6 +36,7 @@
     },
     "root": {
       "inputs": {
+        "gxml": "gxml",
         "nixpkgs": "nixpkgs",
         "vadi": "vadi"
       }

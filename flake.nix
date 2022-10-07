@@ -6,7 +6,12 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, vadi }:
+  inputs.gxml = {
+    url = "git+https://gitlab.gnome.org/RossComputerGuy/gxml.git";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = { self, nixpkgs, vadi, gxml }:
     let
       supportedSystems = [
         "aarch64-linux"
@@ -18,27 +23,11 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
-      gxml-depsFor = forAllSystems (system:
-        let
-          pkgs = nixpkgsFor.${system};
-        in with pkgs; [ libxml2 glib libgee ]);
-
       packagesFor = forAllSystems (system:
         let
           pkgs = nixpkgsFor.${system};
           vadi-pkg = vadi.packages.${system}.default;
-          gxml-deps = gxml-depsFor.${system};
-
-          darwinPackages = with pkgs; {
-            native = [];
-            build = [];
-          };
-
-          linuxPackages = with pkgs; {
-            native = [];
-            build = [];
-          };
-
+          gxml-pkg = gxml.packages.${system}.default;
         in with pkgs; {
           native = [
             meson
@@ -46,10 +35,8 @@
             pkg-config
             vala
             uncrustify
-          ] ++ pkgs.lib.optional (pkgs.stdenv.isDarwin) darwinPackages.native;
-          build = [ glib libpeas vadi-pkg ]
-            ++ gxml-deps
-            ++ pkgs.lib.optional (pkgs.stdenv.isDarwin) darwinPackages.build;
+          ];
+          build = [ glib libpeas vadi-pkg gxml-pkg ];
         });
     in
     {
