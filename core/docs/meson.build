@@ -1,5 +1,6 @@
 libdevident_core_docs_devhelp = custom_target('core-docs-devhelp',
   input: libdevident_core_sources,
+  depends: libdevident_core_shlib,
   output: 'devhelp',
   command: [valadoc, '-o', join_paths(meson.current_build_dir(), 'devhelp'),
       '--doclet', 'devhelp', '@INPUT@', '--force',
