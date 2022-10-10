@@ -1,7 +1,14 @@
 project('libdevident', 'vala', 'c', license: 'GPL-3.0-only', version: '0.2.0-alpha')
 
+gee = dependency('gee-0.8')
+
 vapi_dir = join_paths(meson.project_source_root(), 'vapi')
-add_project_arguments(['--vapidir', vapi_dir], language: 'vala')
+add_project_arguments([
+  '--vapidir', vapi_dir,
+  '--vapidir', join_paths(meson.project_build_root(), 'subprojects', 'gxml', 'gxml'),
+  '--vapidir', join_paths(meson.project_build_root(), 'subprojects', 'vadi', 'lib'),
+  '--vapidir', join_paths(gee.get_variable('datadir'), 'vala', 'vapi')
+], language: 'vala')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -48,6 +55,7 @@ valadoc = find_program('valadoc', required: get_option('docs'), native: true)
 libpeas = dependency('libpeas-1.0', required: false)
 gmodule = dependency('gmodule-2.0', required: false)
 vadi = dependency('vadi-0.0', fallback: ['vadi', 'vadi_dep'], required: true)
+
 gio = dependency('gio-2.0', required: true)
 
 libintl = meson.get_compiler('c').find_library('intl', required: false)

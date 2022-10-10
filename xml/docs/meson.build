@@ -9,6 +9,8 @@ libdevident_xml_docs_devhelp = custom_target('xml-docs-devhelp',
       libdevident_core_docs_args,
       '--vapidir', join_paths(meson.project_build_root(), 'core'),
       '--vapidir', join_paths(meson.project_build_root(), 'subprojects', 'gxml', 'gxml'),
+      '--vapidir', join_paths(meson.project_build_root(), 'subprojects', 'vadi', 'lib'),
+      '--vapidir', join_paths(gee.get_variable('datadir'), 'vala', 'vapi'),
       vala_defines,
       libdevident_xml_docs_args],
   build_by_default: true)
