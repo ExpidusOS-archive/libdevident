@@ -37,13 +37,17 @@ if git.found()
 endif
 
 sdk = dependency('expidus-sdk', native: false, required: false, include_type: 'system', method: 'pkg-config')
-uncrustify = find_program('uncrustify', sdk.get_variable('bindir'), required: sdk.found())
+if sdk.found()
+  uncrustify = find_program('uncrustify', sdk.get_variable('bindir'))
+else
+  uncrustify = disabler()
+endif
 
 valadoc = find_program('valadoc', required: get_option('docs'), native: true)
 
 libpeas = dependency('libpeas-1.0', required: false)
 gmodule = dependency('gmodule-2.0', required: false)
-vadi = dependency('vadi-0.0', required: true)
+vadi = dependency('vadi-0.0', fallback: ['vadi', 'vadi_dep'], required: true)
 gio = dependency('gio-2.0', required: true)
 
 libintl = meson.get_compiler('c').find_library('intl', required: false)
