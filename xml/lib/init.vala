@@ -30,6 +30,11 @@ namespace DevidentXml {
     public void update_state() {
     }
   }
+
+  [CCode(cname = "peas_register_types")]
+  internal void register_types(Peas.ObjectModule module) {
+    module.register_extension_type(typeof (Peas.Activatable), typeof (PeasPlugin));
+  }
 #endif
 
 #if HAS_GMODULE
