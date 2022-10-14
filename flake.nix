@@ -45,8 +45,6 @@
           buildInputs = [
             glib
             libpeas
-            libxml2
-            libgee
             vadi-pkg
             gxml-pkg
           ];
