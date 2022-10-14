@@ -43,7 +43,7 @@ namespace Devident {
       this._plugin_set.extension_removed.connect((info, obj) => {
         var activatable = obj as Peas.Activatable;
         if (activatable != null) {
-          GLib.debug(N_("Removing plugin \"%s\" %p"), info.get_name(), obj);
+          GLib.debug(N_("Removing plugin \"%s\" %p"), info.get_module_name(), obj);
           activatable.deactivate();
           this._plugins.remove(info.get_module_name());
         }
@@ -51,10 +51,13 @@ namespace Devident {
     }
 
     private void plugin_added(Peas.PluginInfo info, Peas.Activatable ?activatable) {
+      GLib.debug(N_("Discovered plugin %s"), info.get_module_name());
       if (activatable != null && !this._plugins.contains(info.get_module_name())) {
-        GLib.debug(N_("Adding plugin \"%s\" %p"), info.get_name(), activatable);
+        GLib.debug(N_("Adding plugin \"%s\" %p"), info.get_module_name(), activatable);
         this._plugins.set(info.get_module_name(), activatable);
         activatable.activate();
+      } else {
+        if (activatable == null) GLib.warning(N_("Failed to activate plugin \"%s\", does not extend PeasActivatable"), info.get_module_name());
       }
     }
   }

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libdevident 0.2.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-14 16:53-0700\n"
-"PO-Revision-Date: 2022-10-14 16:53-0700\n"
+"POT-Creation-Date: 2022-10-14 16:57-0700\n"
+"PO-Revision-Date: 2022-10-14 16:57-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -91,10 +91,20 @@ msgstr "Unexpected type: got null"
 msgid "Removing plugin \"%s\" %p"
 msgstr "Removing plugin \"%s\" %p"
 
-#: core/lib/context/libpeas.vala:55
+#: core/lib/context/libpeas.vala:54
+#, c-format
+msgid "Discovered plugin %s"
+msgstr "Discovered plugin %s"
+
+#: core/lib/context/libpeas.vala:56
 #, c-format
 msgid "Adding plugin \"%s\" %p"
 msgstr "Adding plugin \"%s\" %p"
+
+#: core/lib/context/libpeas.vala:60
+#, c-format
+msgid "Failed to activate plugin \"%s\", does not extend PeasActivatable"
+msgstr "Failed to activate plugin \"%s\", does not extend PeasActivatable"
 
 #: xml/lib/device.vala:18
 #, c-format
