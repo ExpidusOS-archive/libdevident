@@ -2,15 +2,18 @@ conf_data_core = configuration_data()
 conf_data_core.merge_from(conf_data)
 
 libdevident_core_flags = []
+libdevident_core_reqs = []
 
 if libpeas.found()
   conf_data_core.set('HAS_LIBPEAS', 'true')
+  libdevident_core_reqs += ['libpeas-1.0']
 else
   conf_data_core.set('HAS_LIBPEAS', 'false')
 endif
 
 if gmodule.found()
   conf_data_core.set('HAS_GMODULE', 'true')
+  libdevident_core_reqs += ['gmodule-2.0']
 else
   conf_data_core.set('HAS_GMODULE', 'false')
 endif
@@ -69,7 +72,7 @@ libdevident_core = declare_dependency(link_with: libdevident_core_shlib, depende
   compile_args: ['-I' + join_paths(meson.project_build_root(), 'core')])
 pkg.generate(libdevident_core_shlib,
   name: 'devident',
-  requires: ['gio-2.0', 'vadi-0.0'],
+  requires: ['gio-2.0', 'vadi-0.0', libdevident_core_reqs],
   description: 'A device identification library',
   url: 'https://github.com/ExpidusOS/libdevident',
   version: longver)
