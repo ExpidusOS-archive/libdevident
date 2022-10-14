@@ -4,9 +4,12 @@ conf_data_core.merge_from(conf_data)
 libdevident_core_flags = []
 libdevident_core_reqs = []
 
+core_extra_deps = ''
+
 if libpeas.found()
   conf_data_core.set('HAS_LIBPEAS', 'true')
   libdevident_core_reqs += ['libpeas-1.0']
+  core_extra_deps += 'libpeas-1.0\n'
 else
   conf_data_core.set('HAS_LIBPEAS', 'false')
 endif
@@ -14,12 +17,19 @@ endif
 if gmodule.found()
   conf_data_core.set('HAS_GMODULE', 'true')
   libdevident_core_reqs += ['gmodule-2.0']
+  core_extra_deps += 'gmodule-2.0\n'
 else
   conf_data_core.set('HAS_GMODULE', 'false')
 endif
 
+conf_data_core.set('EXTRA_DEPS', core_extra_deps)
+
 build_conf_core = configure_file(input: 'lib/build.vala.in', output: 'build.vala',
  configuration: conf_data_core)
+configure_file(input: 'lib/devident.deps.in', output: 'devident.deps',
+  configuration: conf_data_core,
+  install: true,
+  install_dir: join_paths(datadir, 'vala', 'vapi'))
 
 libdevident_core_rel_sources = ['lib/component.vala', 'lib/context.vala', 'lib/device.vala', 'lib/provider.vala', 'lib/utils.vala',
   'lib/component/display.vala', 'lib/component/input.vala']
