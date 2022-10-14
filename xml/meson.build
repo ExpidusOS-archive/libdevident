@@ -3,6 +3,10 @@ conf_data_xml.merge_from(conf_data)
 
 build_conf_xml = configure_file(input: 'lib/build.vala.in', output: 'build.vala',
  configuration: conf_data_xml)
+configure_file(input: 'lib/devident-xml.deps.in', output: 'devident-xml.deps',
+ configuration: conf_data_xml,
+ install: true,
+ install_dir: join_paths(datadir, 'vala', 'vapi'))
 
 if libpeas.found()
   configure_file(input: 'lib/xml.plugin.in', output: 'devident-xml.plugin',
@@ -40,7 +44,7 @@ libdevident_xml = declare_dependency(link_with: libdevident_xml_shlib, dependenc
   compile_args: ['-I' + join_paths(meson.project_build_root(), 'xml')])
 pkg.generate(libdevident_xml_shlib,
   name: 'devident-xml',
-  requires: ['devident', 'gxml'],
+  requires: ['devident', 'gxml-0.20'],
   description: 'XML loader for libdevident',
   url: 'https://github.com/ExpidusOS/libdevident',
   version: longver)
