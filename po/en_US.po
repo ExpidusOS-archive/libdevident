@@ -7,52 +7,64 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libdevident 0.2.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-06 12:27-0700\n"
-"PO-Revision-Date: 2022-10-06 12:27-0700\n"
+"POT-Creation-Date: 2022-10-14 16:53-0700\n"
+"PO-Revision-Date: 2022-10-14 16:53-0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/lib/component.vala:52
+#: core/lib/component.vala:53
 #, c-format
 msgid "%s (Vendor: \"%s\", Product: \"%s\") - %s: (%s) %s"
 msgstr "%s (Vendor: \"%s\", Product: \"%s\") - %s: (%s) %s"
 
-#: core/lib/component.vala:83
+#: core/lib/component.vala:85
 #, c-format
 msgid "%s - %s"
 msgstr "%s - %s"
 
-#: core/lib/component.vala:86
+#: core/lib/component.vala:88
 #, c-format
 msgid "Components %lu"
 msgstr "Components %lu"
 
-#: core/lib/context.vala:14
+#: core/lib/context.vala:16
 #, c-format
 msgid "Failed to get the host device ID: %s:%d: %s"
 msgstr "Failed to get the host device ID: %s:%d: %s"
 
-#: core/lib/context.vala:27 core/lib/context.vala:37 core/lib/context.vala:47
+#: core/lib/context.vala:27
+msgid "Global context uses libpeas"
+msgstr "Global context uses libpeas"
+
+#: core/lib/context.vala:30 core/lib/context.vala:41 core/lib/context.vala:52
 #, c-format
 msgid "Failed to create a new context: %s:%d: %s"
 msgstr "Failed to create a new context: %s:%d: %s"
 
-#: core/lib/context.vala:73
+#: core/lib/context.vala:38
+msgid "Global context uses GModule"
+msgstr "Global context uses GModule"
+
+#: core/lib/context.vala:49
+msgid "Using base context as the global context"
+msgstr "Using base context as the global context"
+
+#: core/lib/context.vala:80
 #, c-format
 msgid "Adding provider \"%s\" %p"
 msgstr "Adding provider \"%s\" %p"
 
-#: core/lib/context.vala:81
+#: core/lib/context.vala:88
 #, c-format
 msgid "Removing provider \"%s\" %p"
 msgstr "Removing provider \"%s\" %p"
 
-#: core/lib/component/input.vala:80
+#: core/lib/component/input.vala:81
 #, c-format
 msgid ""
 "\n"
@@ -61,16 +73,16 @@ msgstr ""
 "\n"
 "Kind: %s"
 
-#: core/lib/context/gmodule.vala:63
+#: core/lib/context/gmodule.vala:68
 msgid "register_devident_plugin() not found"
 msgstr "register_devident_plugin() not found"
 
-#: core/lib/context/gmodule.vala:67
+#: core/lib/context/gmodule.vala:74
 #, c-format
 msgid "Unexpected type: got %s"
 msgstr "Unexpected type: got %s"
 
-#: core/lib/context/gmodule.vala:70
+#: core/lib/context/gmodule.vala:79
 msgid "Unexpected type: got null"
 msgstr "Unexpected type: got null"
 

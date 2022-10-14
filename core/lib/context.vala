@@ -24,6 +24,7 @@ namespace Devident {
 #if HAS_LIBPEAS
         try {
           global_context = new PeasContext();
+            GLib.debug(N_("Global context uses libpeas"));
           return global_context;
         } catch (GLib.Error e) {
           GLib.critical(N_("Failed to create a new context: %s:%d: %s"), e.domain.to_string(), e.code, e.message);
@@ -34,6 +35,7 @@ namespace Devident {
         if (GLib.Module.supported()) {
           try {
             global_context = new GModuleContext();
+            GLib.debug(N_("Global context uses GModule"));
             return global_context;
           } catch (GLib.Error e) {
             GLib.critical(N_("Failed to create a new context: %s:%d: %s"), e.domain.to_string(), e.code, e.message);
@@ -44,6 +46,7 @@ namespace Devident {
 
         try {
           global_context = new Context();
+          GLib.debug(N_("Using base context as the global context"));
           return global_context;
         } catch (GLib.Error e) {
           GLib.critical(N_("Failed to create a new context: %s:%d: %s"), e.domain.to_string(), e.code, e.message);
