@@ -34,15 +34,15 @@
           vadi-pkg = vadi.packages.${system}.default;
           gxml-pkg = gxml.packages.${system}.default;
           expidus-sdk-pkg = expidus-sdk.packages.${system}.default;
-        in with pkgs; {
-          native = [
+        in with pkgs; rec {
+          nativeBuildInputs = [
             meson
             ninja
             pkg-config
             vala
             expidus-sdk-pkg
           ];
-          build = [
+          buildInputs = [
             glib
             libpeas
             libxml2
@@ -50,13 +50,14 @@
             vadi-pkg
             gxml-pkg
           ];
+          propagatedBuildInputs = buildInputs;
         });
     in
     {
       packages = forAllSystems (system:
         let
           pkgs = nixpkgsFor.${system};
-          systemPackages = packagesFor.${system};
+          packages = packagesFor.${system};
         in {
           default = pkgs.stdenv.mkDerivation rec {
             name = "libdevident";
@@ -65,21 +66,17 @@
             outputs = [ "out" "dev" "devdoc" ];
 
             enableParallelBuilding = true;
-            nativeBuildInputs = systemPackages.native;
-            buildInputs = systemPackages.build;
+            inherit (packages) nativeBuildInputs buildInputs propagatedBuildInputs;
           };
         });
 
       devShells = forAllSystems (system:
         let
           pkgs = nixpkgsFor.${system};
-          systemPackages = packagesFor.${system};
+          packages = packagesFor.${system};
         in {
           default = pkgs.mkShell {
-            packages = with pkgs; [
-              gcc
-              gdb
-            ] ++ systemPackages.native ++ systemPackages.build;
+            packages = packages.nativeBuildInputs ++ packages.buildInputs;
           };
         });
     };
