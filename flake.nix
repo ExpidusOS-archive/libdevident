@@ -65,6 +65,12 @@
 
             enableParallelBuilding = true;
             inherit (packages) nativeBuildInputs buildInputs propagatedBuildInputs;
+
+            meta = with pkgs.lib; {
+              homepage = "https://github.com/ExpidusOS/libdevident";
+              license = with licenses; [ gpl3Only ];
+              maintainers = with expidus-sdk.lib.maintainers; [ TheComputerGuy ];
+            };
           };
         });
 
