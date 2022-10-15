@@ -1,4 +1,4 @@
 [Plugin]
-Module=libdevident-xml.0
+Module=devident-xml
 Name=devident-xml
 Description=XML loading for libdevident

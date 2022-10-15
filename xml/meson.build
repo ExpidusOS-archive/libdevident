@@ -50,7 +50,10 @@ pkg.generate(libdevident_xml_shlib,
   version: longver)
 
 install_subdir(join_paths(meson.current_source_dir(), 'data', 'devident-xml'), install_dir: datadir)
-install_symlink(fs.name(libdevident_xml_shlib.full_path()), pointing_to: join_paths(libdir, fs.name(libdevident_xml_shlib.full_path())), install_dir: join_paths(libdir, 'devident', 'plugins'))
+libdevident_xml_libname = fs.name(libdevident_xml_shlib.full_path()).replace('.' + shortver.split('-')[0], '')
+install_symlink(libdevident_xml_libname.replace('lib', ''),
+  pointing_to: join_paths(libdir, fs.name(libdevident_xml_libname)),
+  install_dir: join_paths(libdir, 'devident', 'plugins'))
 
 subdir('docs', if_found: [valadoc])
 
