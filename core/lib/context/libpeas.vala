@@ -48,6 +48,10 @@ namespace Devident {
           this._plugins.remove(info.get_module_name());
         }
       });
+
+      foreach (var info in this._plugin_engine.get_plugin_list()) {
+        this._plugin_engine.try_load_plugin(info);
+      }
     }
 
     private void plugin_added(Peas.PluginInfo info, Peas.Activatable ?activatable) {
