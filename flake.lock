@@ -1,85 +1,17 @@
 {
   "nodes": {
     "expidus-sdk": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
       "locked": {
-        "lastModified": 1665859560,
-        "narHash": "sha256-rr3TWYhWgX58osv+MCynVO0bRKoLzYCpWlKvJRxcXSU=",
+        "lastModified": 1665966379,
+        "narHash": "sha256-QpuGPa0zeBWdyCJRwHFwhdLGalHZqWf73dZprdheRDY=",
         "owner": "ExpidusOS",
         "repo": "sdk",
-        "rev": "d2bb778f59088e7d04dfa63240cb0c34e59327e7",
+        "rev": "186a8c54ab0cb4f41decdfd4f8534fd47db0437b",
         "type": "github"
       },
       "original": {
         "owner": "ExpidusOS",
         "repo": "sdk",
-        "type": "github"
-      }
-    },
-    "gxml": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1665765513,
-        "narHash": "sha256-5F3ucPRcP+CJphz+I8XMp3w3o1dBQNs+Na1VX67q/T8=",
-        "ref": "master",
-        "rev": "f2b778bb0ad0491205c2c55e746bcf3bf59bfdc4",
-        "revCount": 2115,
-        "type": "git",
-        "url": "https://gitlab.gnome.org/RossComputerGuy/gxml.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://gitlab.gnome.org/RossComputerGuy/gxml.git"
-      }
-    },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1665723124,
-        "narHash": "sha256-J1JY2cN0L+CNDSrGkNdbiTl2EFV8hpqqsDJFICsYSBw=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "31d567846255e122846548255101980162bbf641",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "root": {
-      "inputs": {
-        "expidus-sdk": "expidus-sdk",
-        "gxml": "gxml",
-        "nixpkgs": "nixpkgs",
-        "vadi": "vadi"
-      }
-    },
-    "vadi": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1665765377,
-        "narHash": "sha256-F/+A23n3MZGk0/Uf4yWqn7nNNiFJTt9FIplGcYn4ajo=",
-        "owner": "ExpidusOS",
-        "repo": "Vadi",
-        "rev": "fbe39ef910dfdca2fddcccee115738885cd595e8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ExpidusOS",
-        "ref": "feat/nix",
-        "repo": "Vadi",
         "type": "github"
       }
     }

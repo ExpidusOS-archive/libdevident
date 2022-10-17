@@ -1,86 +1,33 @@
 {
   description = "Device identification library";
 
-  inputs.vadi = {
-    url = github:ExpidusOS/Vadi/feat/nix;
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-
-  inputs.gxml = {
-    url = "git+https://gitlab.gnome.org/RossComputerGuy/gxml.git";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-
   inputs.expidus-sdk = {
     url = github:ExpidusOS/sdk;
-    inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, vadi, gxml, expidus-sdk }:
-    let
-      supportedSystems = [
-        "aarch64-linux"
-        "i686-linux"
-        "riscv64-linux"
-        "x86_64-linux"
-        "x86_64-darwin"
-      ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
-
-      packagesFor = forAllSystems (system:
-        let
-          pkgs = nixpkgsFor.${system};
-          vadi-pkg = vadi.packages.${system}.default;
-          gxml-pkg = gxml.packages.${system}.default;
-          expidus-sdk-pkg = expidus-sdk.packages.${system}.default;
-        in with pkgs; rec {
-          nativeBuildInputs = [
-            meson
-            ninja
-            pkg-config
-            vala
-            expidus-sdk-pkg
-          ];
-          buildInputs = [
-            glib
-            libpeas
-            vadi-pkg
-            gxml-pkg
-          ];
-          propagatedBuildInputs = buildInputs;
-        });
-    in
+  outputs = { self, expidus-sdk }:
     {
-      packages = forAllSystems (system:
+      overlays.default = final: prev: {
+        libdevident = (prev.libdevident.overrideAttrs (old: {
+          version = self.rev or "dirty";
+          src = builtins.path { name = "libdevident"; path = prev.lib.cleanSource ./.; };
+        }));
+      };
+
+      packages = expidus-sdk.lib.forAllSystems (system:
         let
-          pkgs = nixpkgsFor.${system};
-          packages = packagesFor.${system};
+          pkgs = expidus-sdk.lib.nixpkgsFor.${system};
         in {
-          default = pkgs.stdenv.mkDerivation rec {
-            name = "libdevident";
-            src = self;
-
-            outputs = [ "out" "dev" "devdoc" ];
-
-            enableParallelBuilding = true;
-            inherit (packages) nativeBuildInputs buildInputs propagatedBuildInputs;
-
-            meta = with pkgs.lib; {
-              homepage = "https://github.com/ExpidusOS/libdevident";
-              license = with licenses; [ gpl3Only ];
-              maintainers = with expidus-sdk.lib.maintainers; [ TheComputerGuy ];
-            };
-          };
+          default = (self.overlays.default pkgs pkgs).libdevident;
         });
 
-      devShells = forAllSystems (system:
+      devShells = expidus-sdk.lib.forAllSystems (system:
         let
-          pkgs = nixpkgsFor.${system};
-          packages = packagesFor.${system};
+          pkgs = expidus-sdk.lib.nixpkgsFor.${system};
+          pkg = self.packages.${system}.default;
         in {
           default = pkgs.mkShell {
-            packages = packages.nativeBuildInputs ++ packages.buildInputs;
+            packages = pkg.nativeBuildInputs ++ pkg.buildInputs;
           };
         });
     };
