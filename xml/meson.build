@@ -49,7 +49,7 @@ pkg.generate(libdevident_xml_shlib,
   url: 'https://github.com/ExpidusOS/libdevident',
   version: longver)
 
-install_subdir(join_paths(meson.current_source_dir(), 'data', 'devident-xml'), install_dir: datadir)
+install_subdir(join_paths(meson.current_source_dir(), 'data', 'devident-xml'), install_dir: join_paths(datadir, 'devident-xml', 'devices'), strip_directory: true)
 libdevident_xml_libname = fs.name(libdevident_xml_shlib.full_path()).replace('.' + shortver.split('-')[0], '')
 install_symlink('libdevident-xml.so',
   pointing_to: join_paths(libdir, fs.name(libdevident_xml_libname)),
