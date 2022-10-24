@@ -1,0 +1,10 @@
+<devident-device>
+  <kind>laptop</kind>
+  <component-info>
+    <name>Alienware M15 R5</name>
+    <vendor>Alienware</vendor>
+    <product>M15 R5</product>
+    <website>https://www.dell.com/ae/p/alienware-m15-r5-laptop/pd</website>
+    <kind>motherboard</kind>
+  </component-info>
+</devident-device>
