@@ -1,0 +1,10 @@
+<devident-device>
+  <kind>desktop</kind>
+  <component-info>
+    <name>QEMU Standard PC (i440FX + PIIX, 1996) pc-1440fx-7.0</name>
+    <vendor>QEMU</vendor>
+    <product>Standard PC (i440FX + PIIX, 1996) pc-1440fx-7.0</product>
+    <website>http://www.qemu.org</website>
+    <kind>motherboard</kind>
+  </component-info>
+</devident-device>
