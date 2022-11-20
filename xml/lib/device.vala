@@ -5,6 +5,8 @@ namespace DevidentXml {
     }
 
     public Devident.Device ?get_device_from_path(string path) {
+      if (!GLib.FileUtils.test(path, GLib.FileTest.EXISTS)) return null;
+
       try {
         var document = new GXml.Document.from_path(path);
         document.read_from_file(GLib.File.new_for_path(path), null);
