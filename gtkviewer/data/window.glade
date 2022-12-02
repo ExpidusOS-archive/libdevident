@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <requires lib="tokyo-gtk4" version="1.0"/>
+
+  <template class="DevidentGtkViewerWindow" parent="TokyoGtkApplicationWindow">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+  </template>
+</interface>

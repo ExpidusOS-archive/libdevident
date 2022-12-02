@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Devident GTK Viewer
+Exec=devident-gtkviewer
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

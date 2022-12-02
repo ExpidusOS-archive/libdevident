@@ -12,6 +12,12 @@ core/lib/context/libpeas.vala
 
 core/lib/device/darwin.c
 
+gtkviewer/data/gtkviewer.desktop.in
+gtkviewer/data/window.glade
+gtkviewer/src/application.vala
+gtkviewer/src/build.vala.in
+gtkviewer/src/window.vala
+
 xml/lib/component.vala
 xml/lib/device.vala
 xml/lib/init.vala

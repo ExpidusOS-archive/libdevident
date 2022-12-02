@@ -62,6 +62,8 @@ gio = dependency('gio-2.0', required: true)
 libintl = meson.get_compiler('c').find_library('intl', required: false)
 gxml = dependency('gxml-0.20', fallback: ['gxml', 'libgxml_dep'], required: false)
 
+libtokyo_gtk4 = dependency('tokyo-gtk4', fallback: ['libtokyo', 'libtokyo_gtk4_dep'], required: false)
+
 conf_data.set('PREFIX', prefix)
 conf_data.set('BINDIR', bindir)
 conf_data.set('DATADIR', datadir)
@@ -89,3 +91,4 @@ subdir('po')
 subdir('core')
 
 subdir('xml', if_found: [gxml])
+subdir('gtkviewer', if_found: [libtokyo_gtk4])
