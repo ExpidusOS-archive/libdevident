@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/expidus/devident/gtkviewer">
-    <file>window.glade</file>
+    <file>window.ui</file>
   </gresource>
 </gresources>

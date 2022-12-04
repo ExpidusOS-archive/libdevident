@@ -92,3 +92,4 @@ subdir('core')
 
 subdir('xml', if_found: [gxml])
 subdir('gtkviewer', if_found: [libtokyo_gtk4])
+subdir('query')
